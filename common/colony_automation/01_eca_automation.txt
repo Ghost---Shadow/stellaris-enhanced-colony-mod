@@ -1,0 +1,811 @@
+# Enhanced Colony Automation AI - Automation for new ECA designations
+# All valid for Stellaris 4.x - no invalid districts/zones/buildings.
+
+# ===== ENHANCED CAPITAL =====
+
+automate_eca_capital = {
+	category = "planet_automation_designation_construction"
+
+	available = {
+		has_designation = col_eca_capital
+	}
+
+	prio_districts = {
+		district_city
+		district_arcology_housing
+		district_rw_city
+		district_hab_housing
+	}
+
+	prio_zones = {
+		zone_industrial
+		zone_research_unity
+		zone_foundry
+		zone_energy
+		zone_food
+		zone_minerals
+	}
+
+	buildings = {
+		1 = {
+			building = building_embassy
+		}
+
+		2 = {
+			building = building_autochthon_monument
+		}
+
+		2_corp = {
+			building = building_corporate_monument
+		}
+
+		3 = {
+			building = building_vultaum_reality_computer
+		}
+
+		4 = {
+			building = building_institute
+		}
+
+		5 = {
+			building = building_archaeostudies_faculty
+		}
+
+		6 = {
+			building = building_autocurating_vault
+		}
+
+		6_spir = {
+			building = building_citadel_of_faith
+		}
+
+		6_corp = {
+			building = building_corporate_vault
+		}
+
+		# Gene clinic for pop growth + amenities
+		7 = {
+			building = building_medical_1
+			available = {
+				owner = { is_synthetic_empire = no }
+			}
+		}
+
+		# Alloy foundry - capitals should produce alloys early
+		8 = {
+			building = building_foundry_1
+			available = {
+				exists = owner
+				owner = {
+					OR = {
+						eca_has_alloy_deficit = yes
+						eca_is_early_game = yes
+					}
+				}
+			}
+		}
+
+		# Consumer goods factory
+		9 = {
+			building = building_factory_1
+			available = {
+				exists = owner
+				owner = {
+					country_uses_consumer_goods = yes
+					OR = {
+						eca_has_consumer_goods_deficit = yes
+						eca_is_early_game = yes
+					}
+				}
+			}
+		}
+
+		# Research lab
+		10 = {
+			building = building_research_lab_1
+		}
+
+		# Holo theatre for amenity coverage
+		11 = {
+			building = building_holo_theatres
+			available = {
+				free_amenities < 5
+			}
+		}
+
+		# Strategic resource buildings (deficit-conditional)
+		12 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = { eca_has_exotic_gas_deficit = yes }
+			}
+		}
+
+		13 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = { eca_has_volatile_mote_deficit = yes }
+			}
+		}
+
+		14 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = { eca_has_rare_crystal_deficit = yes }
+			}
+		}
+	}
+}
+
+# ===== ENHANCED MINING =====
+
+automate_eca_mining = {
+	category = "planet_automation_designation_construction"
+
+	available = {
+		has_designation = col_eca_mining
+	}
+
+	prio_districts = {
+		district_mining
+		district_mining_uncapped
+	}
+
+	prio_zones = {
+		zone_minerals
+	}
+
+	buildings = {
+		1 = {
+			building = building_mineral_purification_plant
+		}
+
+		2 = {
+			building = building_mining_districts_1
+		}
+
+		3 = {
+			building = building_crystal_mines
+		}
+
+		4 = {
+			building = building_mote_harvesters
+		}
+
+		5 = {
+			building = building_gas_extractors
+		}
+
+		6 = {
+			building = building_medical_1
+			available = {
+				free_amenities < 8
+				owner = { is_synthetic_empire = no }
+			}
+		}
+
+		7 = {
+			building = building_foundry_1
+			available = {
+				exists = owner
+				owner = { eca_has_alloy_deficit = yes }
+			}
+		}
+
+		8 = {
+			building = building_factory_1
+			available = {
+				exists = owner
+				owner = {
+					eca_has_consumer_goods_deficit = yes
+					country_uses_consumer_goods = yes
+				}
+			}
+		}
+
+		9 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = { eca_has_volatile_mote_deficit = yes }
+			}
+		}
+
+		10 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = { eca_has_rare_crystal_deficit = yes }
+			}
+		}
+
+		11 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = { eca_has_exotic_gas_deficit = yes }
+			}
+		}
+
+		12 = {
+			building = building_holo_theatres
+			available = {
+				free_amenities < 3
+			}
+		}
+	}
+}
+
+# ===== ENHANCED GENERATOR =====
+
+automate_eca_generator = {
+	category = "planet_automation_designation_construction"
+
+	available = {
+		has_designation = col_eca_generator
+	}
+
+	prio_districts = {
+		district_generator
+		district_generator_uncapped
+	}
+
+	prio_zones = {
+		zone_energy
+	}
+
+	buildings = {
+		1 = {
+			building = building_energy_grid
+		}
+
+		2 = {
+			building = building_generator_districts_1
+		}
+
+		3 = {
+			building = building_mote_harvesters
+		}
+
+		4 = {
+			building = building_crystal_mines
+		}
+
+		5 = {
+			building = building_gas_extractors
+		}
+
+		6 = {
+			building = building_medical_1
+			available = {
+				free_amenities < 8
+				owner = { is_synthetic_empire = no }
+			}
+		}
+
+		7 = {
+			building = building_foundry_1
+			available = {
+				exists = owner
+				owner = { eca_has_alloy_deficit = yes }
+			}
+		}
+
+		8 = {
+			building = building_factory_1
+			available = {
+				exists = owner
+				owner = {
+					eca_has_consumer_goods_deficit = yes
+					country_uses_consumer_goods = yes
+				}
+			}
+		}
+
+		9 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = { eca_has_volatile_mote_deficit = yes }
+			}
+		}
+
+		10 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = { eca_has_rare_crystal_deficit = yes }
+			}
+		}
+
+		11 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = { eca_has_exotic_gas_deficit = yes }
+			}
+		}
+
+		12 = {
+			building = building_holo_theatres
+			available = {
+				free_amenities < 3
+			}
+		}
+	}
+}
+
+# ===== ENHANCED FARMING =====
+
+automate_eca_farming = {
+	category = "planet_automation_designation_construction"
+
+	available = {
+		has_designation = col_eca_farming
+	}
+
+	prio_districts = {
+		district_farming
+		district_farming_uncapped
+	}
+
+	prio_zones = {
+		zone_food
+	}
+
+	buildings = {
+		1 = {
+			building = building_food_processing_facility
+		}
+
+		2 = {
+			building = building_farming_districts_1
+		}
+
+		3 = {
+			building = building_gas_extractors
+		}
+
+		4 = {
+			building = building_crystal_mines
+		}
+
+		5 = {
+			building = building_mote_harvesters
+		}
+
+		6 = {
+			building = building_medical_1
+			available = {
+				free_amenities < 8
+				owner = { is_synthetic_empire = no }
+			}
+		}
+
+		7 = {
+			building = building_foundry_1
+			available = {
+				exists = owner
+				owner = { eca_has_alloy_deficit = yes }
+			}
+		}
+
+		8 = {
+			building = building_factory_1
+			available = {
+				exists = owner
+				owner = {
+					eca_has_consumer_goods_deficit = yes
+					country_uses_consumer_goods = yes
+				}
+			}
+		}
+
+		9 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = { eca_has_volatile_mote_deficit = yes }
+			}
+		}
+
+		10 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = { eca_has_rare_crystal_deficit = yes }
+			}
+		}
+
+		11 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = { eca_has_exotic_gas_deficit = yes }
+			}
+		}
+
+		12 = {
+			building = building_holo_theatres
+			available = {
+				free_amenities < 3
+			}
+		}
+	}
+}
+
+# ===== ENHANCED FOUNDRY =====
+
+automate_eca_foundry = {
+	category = "planet_automation_designation_construction"
+
+	available = {
+		has_designation = col_eca_foundry
+	}
+
+	prio_districts = {
+		district_city
+		district_arcology_housing
+		district_rw_city
+	}
+
+	prio_zones = {
+		zone_foundry
+	}
+
+	buildings = {
+		1 = {
+			building = building_ministry_production
+		}
+
+		2 = {
+			building = building_production_center
+		}
+
+		3 = {
+			building = building_foundry_efficiency_1
+		}
+
+		4 = {
+			building = building_foundry_upkeep_1
+		}
+
+		5 = {
+			building = building_foundry_1
+		}
+
+		6 = {
+			building = building_medical_1
+			available = {
+				free_amenities < 8
+				owner = { is_synthetic_empire = no }
+			}
+		}
+
+		7 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = { eca_has_volatile_mote_deficit = yes }
+			}
+		}
+
+		8 = {
+			building = building_holo_theatres
+			available = {
+				free_amenities < 3
+			}
+		}
+
+		9 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = { eca_has_rare_crystal_deficit = yes }
+			}
+		}
+
+		10 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = { eca_has_exotic_gas_deficit = yes }
+			}
+		}
+
+		11 = {
+			building = building_factory_1
+			available = {
+				exists = owner
+				owner = {
+					eca_has_consumer_goods_deficit = yes
+					country_uses_consumer_goods = yes
+				}
+			}
+		}
+	}
+}
+
+# ===== ENHANCED FACTORY =====
+
+automate_eca_factory = {
+	category = "planet_automation_designation_construction"
+
+	available = {
+		has_designation = col_eca_factory
+	}
+
+	prio_districts = {
+		district_city
+		district_arcology_housing
+		district_rw_city
+	}
+
+	prio_zones = {
+		zone_factory
+	}
+
+	buildings = {
+		1 = {
+			building = building_ministry_production
+		}
+
+		2 = {
+			building = building_production_center
+		}
+
+		3 = {
+			building = building_factory_efficiency_1
+		}
+
+		4 = {
+			building = building_factory_upkeep_1
+		}
+
+		5 = {
+			building = building_factory_1
+		}
+
+		6 = {
+			building = building_medical_1
+			available = {
+				free_amenities < 8
+				owner = { is_synthetic_empire = no }
+			}
+		}
+
+		7 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = { eca_has_rare_crystal_deficit = yes }
+			}
+		}
+
+		8 = {
+			building = building_holo_theatres
+			available = {
+				free_amenities < 3
+			}
+		}
+
+		9 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = { eca_has_volatile_mote_deficit = yes }
+			}
+		}
+
+		10 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = { eca_has_exotic_gas_deficit = yes }
+			}
+		}
+
+		11 = {
+			building = building_foundry_1
+			available = {
+				exists = owner
+				owner = { eca_has_alloy_deficit = yes }
+			}
+		}
+	}
+}
+
+# ===== ENHANCED RESEARCH =====
+
+automate_eca_research = {
+	category = "planet_automation_designation_construction"
+
+	available = {
+		has_designation = col_eca_research
+	}
+
+	prio_districts = {
+		district_city
+		district_arcology_housing
+		district_rw_city
+		district_hab_science
+		district_hab_housing
+	}
+
+	prio_zones = {
+		zone_research
+	}
+
+	buildings = {
+		1 = {
+			building = building_vultaum_reality_computer
+		}
+
+		2 = {
+			building = building_institute
+		}
+
+		3 = {
+			building = building_supercomputer
+		}
+
+		4 = {
+			building = building_archaeostudies_faculty
+		}
+
+		5 = {
+			building = building_research_efficiency_1
+		}
+
+		6 = {
+			building = building_research_upkeep_1
+		}
+
+		7 = {
+			building = building_engineering_facility_1
+		}
+
+		8 = {
+			building = building_physics_lab_1
+		}
+
+		9 = {
+			building = building_biolab_1
+		}
+
+		10 = {
+			building = building_medical_1
+			available = {
+				free_amenities < 8
+				owner = { is_synthetic_empire = no }
+			}
+		}
+
+		11 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = { eca_has_exotic_gas_deficit = yes }
+			}
+		}
+
+		12 = {
+			building = building_holo_theatres
+			available = {
+				free_amenities < 3
+			}
+		}
+
+		13 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = { eca_has_rare_crystal_deficit = yes }
+			}
+		}
+
+		14 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = { eca_has_volatile_mote_deficit = yes }
+			}
+		}
+	}
+}
+
+# ===== ENHANCED INDUSTRIAL =====
+
+automate_eca_industrial = {
+	category = "planet_automation_designation_construction"
+
+	available = {
+		has_designation = col_eca_industrial
+	}
+
+	prio_districts = {
+		district_city
+		district_arcology_housing
+		district_rw_city
+	}
+
+	prio_zones = {
+		zone_industrial
+	}
+
+	buildings = {
+		1 = {
+			building = building_ministry_production
+		}
+
+		2 = {
+			building = building_production_center
+		}
+
+		3 = {
+			building = building_foundry_efficiency_1
+		}
+
+		4 = {
+			building = building_factory_efficiency_1
+		}
+
+		5 = {
+			building = building_foundry_upkeep_1
+		}
+
+		6 = {
+			building = building_factory_upkeep_1
+		}
+
+		7 = {
+			building = building_foundry_1
+		}
+
+		8 = {
+			building = building_factory_1
+		}
+
+		9 = {
+			building = building_medical_1
+			available = {
+				free_amenities < 8
+				owner = { is_synthetic_empire = no }
+			}
+		}
+
+		10 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = { eca_has_volatile_mote_deficit = yes }
+			}
+		}
+
+		11 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = { eca_has_rare_crystal_deficit = yes }
+			}
+		}
+
+		12 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = { eca_has_exotic_gas_deficit = yes }
+			}
+		}
+
+		13 = {
+			building = building_holo_theatres
+			available = {
+				free_amenities < 3
+			}
+		}
+	}
+}

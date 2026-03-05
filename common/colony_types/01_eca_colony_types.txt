@@ -1,0 +1,336 @@
+# Enhanced Colony Automation AI - New Colony Type Definitions
+# These appear alongside vanilla designations in the picker.
+# Same production bonuses as vanilla, but with improved automation.
+# Weight = 0 so they must be manually assigned (for A/B testing).
+
+# Enhanced Capital
+col_eca_capital = {
+	icon = GFX_colony_type_capital
+
+	potential = {
+		is_capital = yes
+		exists = owner_or_space_owner
+		owner_or_space_owner = { is_regular_empire = yes }
+	}
+
+	planet_modifier = {
+		planet_stability_add = 5
+		planet_amenities_add = 1000
+		planet_housing_add = 1000
+		pop_government_ethic_attraction = 1
+		planet_resettlement_unemployed_destination_mult = 0.1
+		planet_jobs_produces_mult = 0.1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner_or_space_owner
+			owner_or_space_owner = { has_tradition = tr_adaptability_finish }
+		}
+		modifier = {
+			planet_jobs_produces_mult = 0.05
+		}
+	}
+
+	weight_modifier = {
+		modifier = {
+			add = 0
+		}
+	}
+}
+
+# Enhanced Mining
+col_eca_mining = {
+	icon = GFX_colony_type_mine
+
+	potential = {
+		exists = owner_or_space_owner
+		owner_or_space_owner = { is_regular_empire = yes }
+		NOR = {
+			uses_district_set = city_world
+			uses_district_set = ring_world
+			uses_district_set = habitat
+			uses_district_set = cosmogenesis_world
+		}
+		is_special_colony_type = no
+		is_capital = no
+		NOT = { is_planet_class = pc_nanotech }
+	}
+
+	planet_modifier = {
+		planet_district_mining_build_speed_mult = 0.25
+		planet_miners_produces_mult = 0.25
+	}
+
+	triggered_planet_modifier = {
+		potential = { is_planet_class = pc_volcanic }
+		planet_district_melting_build_speed_mult = 0.25
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner_or_space_owner
+			owner_or_space_owner = { has_tradition = tr_adaptability_finish }
+		}
+		modifier = { planet_miners_produces_mult = 0.1 }
+	}
+
+	weight_modifier = {
+		modifier = {
+			add = 0
+		}
+	}
+}
+
+# Enhanced Generator
+col_eca_generator = {
+	icon = GFX_colony_type_generator
+
+	potential = {
+		exists = owner_or_space_owner
+		owner_or_space_owner = { is_regular_empire = yes }
+		NOR = {
+			uses_district_set = city_world
+			uses_district_set = ring_world
+			uses_district_set = habitat
+			uses_district_set = cosmogenesis_world
+		}
+		is_special_colony_type = no
+		is_capital = no
+		NOT = { is_planet_class = pc_nanotech }
+	}
+
+	planet_modifier = {
+		planet_district_generator_build_speed_mult = 0.25
+		planet_technician_produces_mult = 0.25
+	}
+
+	triggered_planet_modifier = {
+		potential = { is_planet_class = pc_volcanic }
+		planet_district_geothermal_build_speed_mult = 0.25
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner_or_space_owner
+			owner_or_space_owner = { has_tradition = tr_adaptability_finish }
+		}
+		modifier = { planet_technician_produces_mult = 0.1 }
+	}
+
+	weight_modifier = {
+		modifier = {
+			add = 0
+		}
+	}
+}
+
+# Enhanced Farming
+col_eca_farming = {
+	icon = GFX_colony_type_farm
+
+	potential = {
+		exists = owner_or_space_owner
+		owner_or_space_owner = {
+			is_regular_empire = yes
+			country_uses_food = yes
+		}
+		NOR = {
+			uses_district_set = city_world
+			uses_district_set = ring_world
+			uses_district_set = habitat
+			uses_district_set = machine_world
+			uses_district_set = cosmogenesis_world
+		}
+		is_special_colony_type = no
+		is_capital = no
+		NOT = { is_planet_class = pc_nanotech }
+	}
+
+	planet_modifier = {
+		planet_district_farming_build_speed_mult = 0.25
+		planet_farmers_produces_mult = 0.25
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner_or_space_owner
+			owner_or_space_owner = { has_tradition = tr_adaptability_finish }
+		}
+		modifier = { planet_farmers_produces_mult = 0.1 }
+	}
+
+	weight_modifier = {
+		modifier = {
+			add = 0
+		}
+	}
+}
+
+# Enhanced Foundry
+col_eca_foundry = {
+	icon = GFX_colony_type_foundry
+
+	potential = {
+		exists = owner_or_space_owner
+		owner_or_space_owner = { is_regular_empire = yes }
+		NOR = {
+			uses_district_set = city_world
+			uses_district_set = habitat
+			uses_district_set = machine_world
+			uses_district_set = hive_world
+			uses_district_set = cosmogenesis_world
+		}
+		is_special_colony_type = no
+		is_capital = no
+		NOT = { is_planet_class = pc_nanotech }
+	}
+
+	planet_modifier = {
+		planet_metallurgists_upkeep_mult = -0.20
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner_or_space_owner
+			owner_or_space_owner = { has_tradition = tr_adaptability_finish }
+		}
+		modifier = {
+			planet_metallurgists_produces_mult = 0.05
+		}
+	}
+
+	weight_modifier = {
+		modifier = {
+			add = 0
+		}
+	}
+}
+
+# Enhanced Factory
+col_eca_factory = {
+	icon = GFX_colony_type_factory
+
+	potential = {
+		exists = owner_or_space_owner
+		owner_or_space_owner = {
+			is_regular_empire = yes
+			country_uses_consumer_goods = yes
+		}
+		NOR = {
+			uses_district_set = city_world
+			uses_district_set = habitat
+			uses_district_set = machine_world
+			uses_district_set = hive_world
+			uses_district_set = cosmogenesis_world
+		}
+		is_special_colony_type = no
+		is_capital = no
+		NOT = { is_planet_class = pc_nanotech }
+	}
+
+	planet_modifier = {
+		planet_artisans_upkeep_mult = -0.20
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner_or_space_owner
+			owner_or_space_owner = { has_tradition = tr_adaptability_finish }
+		}
+		modifier = {
+			planet_artisans_produces_mult = 0.05
+		}
+	}
+
+	weight_modifier = {
+		modifier = {
+			add = 0
+		}
+	}
+}
+
+# Enhanced Research
+col_eca_research = {
+	icon = GFX_colony_type_research
+
+	potential = {
+		exists = owner_or_space_owner
+		owner_or_space_owner = { is_regular_empire = yes }
+		NOR = {
+			uses_district_set = city_world
+			uses_district_set = ring_world
+			uses_district_set = habitat
+			uses_district_set = cosmogenesis_world
+		}
+		is_special_colony_type = no
+		is_capital = no
+		NOT = { is_planet_class = pc_nanotech }
+	}
+
+	planet_modifier = {
+		planet_building_research_lab_1_build_speed_mult = 0.25
+		planet_researchers_upkeep_mult = -0.2
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner_or_space_owner
+			owner_or_space_owner = { has_tradition = tr_adaptability_finish }
+		}
+		modifier = {
+			planet_researchers_produces_mult = 0.05
+		}
+	}
+
+	weight_modifier = {
+		modifier = {
+			add = 0
+		}
+	}
+}
+
+# Enhanced Industrial
+col_eca_industrial = {
+	icon = GFX_colony_type_industrial
+
+	potential = {
+		exists = owner_or_space_owner
+		owner_or_space_owner = {
+			is_regular_empire = yes
+			country_uses_consumer_goods = yes
+		}
+		NOR = {
+			uses_district_set = city_world
+			uses_district_set = habitat
+			uses_district_set = machine_world
+			uses_district_set = hive_world
+			uses_district_set = cosmogenesis_world
+		}
+		is_special_colony_type = no
+		is_capital = no
+		NOT = { is_planet_class = pc_nanotech }
+	}
+
+	planet_modifier = {
+		planet_artisans_upkeep_mult = -0.10
+		planet_metallurgists_upkeep_mult = -0.10
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner_or_space_owner
+			owner_or_space_owner = { has_tradition = tr_adaptability_finish }
+		}
+		modifier = {
+			planet_artisans_produces_mult = 0.05
+			planet_metallurgists_produces_mult = 0.05
+		}
+	}
+
+	weight_modifier = {
+		modifier = {
+			add = 0
+		}
+	}
+}

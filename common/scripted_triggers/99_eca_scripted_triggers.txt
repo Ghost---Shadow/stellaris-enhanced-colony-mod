@@ -1,0 +1,99 @@
+# Enhanced Colony Automation AI - Scripted Triggers
+# Scope annotations: (country) = must be called in country scope or via owner = { }
+#                    (planet)  = must be called in planet scope
+
+# ===== RESOURCE DEFICIT TRIGGERS (country scope) =====
+
+eca_has_mineral_deficit = {
+	has_monthly_income = { resource = minerals value < 5 }
+}
+
+eca_has_severe_mineral_deficit = {
+	has_monthly_income = { resource = minerals value < -10 }
+}
+
+eca_has_energy_deficit = {
+	has_monthly_income = { resource = energy value < 5 }
+}
+
+eca_has_severe_energy_deficit = {
+	has_monthly_income = { resource = energy value < -10 }
+}
+
+eca_has_food_deficit = {
+	has_monthly_income = { resource = food value < 3 }
+}
+
+eca_has_severe_food_deficit = {
+	has_monthly_income = { resource = food value < -5 }
+}
+
+eca_has_alloy_deficit = {
+	has_monthly_income = { resource = alloys value < 3 }
+}
+
+eca_has_consumer_goods_deficit = {
+	has_monthly_income = { resource = consumer_goods value < 3 }
+}
+
+eca_has_rare_crystal_deficit = {
+	has_monthly_income = { resource = rare_crystals value < 1 }
+}
+
+eca_has_volatile_mote_deficit = {
+	has_monthly_income = { resource = volatile_motes value < 1 }
+}
+
+eca_has_exotic_gas_deficit = {
+	has_monthly_income = { resource = exotic_gases value < 1 }
+}
+
+# ===== SURPLUS TRIGGERS (country scope) =====
+
+eca_has_mineral_surplus = {
+	has_monthly_income = { resource = minerals value > 50 }
+}
+
+eca_has_energy_surplus = {
+	has_monthly_income = { resource = energy value > 30 }
+}
+
+eca_has_alloy_surplus = {
+	has_monthly_income = { resource = alloys value > 15 }
+}
+
+# ===== PLANET CONDITION TRIGGERS (planet scope) =====
+
+eca_planet_needs_amenities = {
+	free_amenities < 3
+}
+
+eca_planet_needs_amenities_soon = {
+	free_amenities < 5
+}
+
+eca_planet_needs_housing = {
+	free_housing < 2
+}
+
+# ===== EMPIRE PHASE TRIGGERS (country scope) =====
+
+eca_is_early_game = {
+	years_passed < 30
+}
+
+eca_is_mid_game = {
+	years_passed >= 30
+	years_passed < 75
+}
+
+eca_is_late_game = {
+	years_passed >= 75
+}
+
+# ===== REGULAR EMPIRE GUARD (planet scope) =====
+
+eca_is_regular_empire_planet = {
+	exists = owner
+	owner = { is_regular_empire = yes }
+}
