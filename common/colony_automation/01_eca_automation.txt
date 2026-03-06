@@ -64,16 +64,8 @@ automate_eca_capital = {
 			building = building_corporate_vault
 		}
 
-		# Gene clinic for pop growth + amenities
+		# Alloy foundry - NPV=1133, early game or deficit
 		7 = {
-			building = building_medical_1
-			available = {
-				owner = { is_synthetic_empire = no }
-			}
-		}
-
-		# Alloy foundry - 2x buffer check on minerals
-		8 = {
 			building = building_foundry_1
 			available = {
 				exists = owner
@@ -87,8 +79,8 @@ automate_eca_capital = {
 			}
 		}
 
-		# Consumer goods factory - 2x buffer check on minerals
-		9 = {
+		# Consumer goods factory - NPV=1133, early game or deficit
+		8 = {
 			building = building_factory_1
 			available = {
 				exists = owner
@@ -103,17 +95,8 @@ automate_eca_capital = {
 			}
 		}
 
-		# Research lab - 2x buffer check on CG
-		10 = {
-			building = building_research_lab_1
-			available = {
-				exists = owner
-				owner = { eca_can_afford_research_upkeep = yes }
-			}
-		}
-
-		# Administrative office - unity (non-spiritualist)
-		10_admin = {
+		# Administrative office - NPV=1133
+		8_admin = {
 			building = building_bureaucratic_1
 			available = {
 				exists = owner
@@ -125,8 +108,8 @@ automate_eca_capital = {
 			}
 		}
 
-		# Temple - unity (spiritualist)
-		10_temple = {
+		# Temple - NPV=1133 (spiritualist)
+		8_temple = {
 			building = building_temple
 			available = {
 				exists = owner
@@ -140,7 +123,24 @@ automate_eca_capital = {
 			}
 		}
 
-		# Holo theatre for amenity coverage
+		# Research lab - NPV=576
+		9 = {
+			building = building_research_lab_1
+			available = {
+				exists = owner
+				owner = { eca_can_afford_research_upkeep = yes }
+			}
+		}
+
+		# Gene clinic - NPV=199 + unquantifiable pop growth
+		10 = {
+			building = building_medical_1
+			available = {
+				owner = { is_synthetic_empire = no }
+			}
+		}
+
+		# Holo theatre - NPV=1273 but only fires when amenities low
 		11 = {
 			building = building_holo_theatres
 			available = {
@@ -203,29 +203,26 @@ automate_eca_mining = {
 	}
 
 	buildings = {
-		# Production boosters - no buffer needed (they improve existing output)
+		# Deposit extractors first - NPV=1124 each, essentially free income
 		1 = {
-			building = building_mineral_purification_plant
-		}
-
-		2 = {
-			building = building_mining_districts_1
-		}
-
-		# Deposit extractors - essentially free income, no buffer
-		3 = {
 			building = building_crystal_mines
 		}
 
-		4 = {
+		2 = {
 			building = building_mote_harvesters
 		}
 
-		5 = {
+		3 = {
 			building = building_gas_extractors
 		}
 
-		6 = {
+		# District capacity upgrade - enables more mining districts
+		4 = {
+			building = building_mining_districts_1
+		}
+
+		# Gene clinic - pop growth + amenities (NPV=199 + unquantifiable pop growth)
+		5 = {
 			building = building_medical_1
 			available = {
 				free_amenities < 8
@@ -233,8 +230,8 @@ automate_eca_mining = {
 			}
 		}
 
-		# Off-designation support - 2x buffer required
-		7 = {
+		# Off-designation support - NPV=1133 each, 2x buffer required
+		6 = {
 			building = building_foundry_1
 			available = {
 				exists = owner
@@ -245,7 +242,7 @@ automate_eca_mining = {
 			}
 		}
 
-		8 = {
+		7 = {
 			building = building_factory_1
 			available = {
 				exists = owner
@@ -257,41 +254,8 @@ automate_eca_mining = {
 			}
 		}
 
-		# Strategic plants - deficit + buffer
-		9 = {
-			building = building_chemical_plant
-			available = {
-				exists = owner
-				owner = {
-					eca_has_volatile_mote_deficit = yes
-					eca_can_afford_strategic_upkeep = yes
-				}
-			}
-		}
-
-		10 = {
-			building = building_crystal_plant
-			available = {
-				exists = owner
-				owner = {
-					eca_has_rare_crystal_deficit = yes
-					eca_can_afford_strategic_upkeep = yes
-				}
-			}
-		}
-
-		11 = {
-			building = building_refinery
-			available = {
-				exists = owner
-				owner = {
-					eca_has_exotic_gas_deficit = yes
-					eca_can_afford_strategic_upkeep = yes
-				}
-			}
-		}
-
-		12_admin = {
+		# Unity - NPV=1133
+		8_admin = {
 			building = building_bureaucratic_1
 			available = {
 				exists = owner
@@ -303,7 +267,7 @@ automate_eca_mining = {
 			}
 		}
 
-		12_temple = {
+		8_temple = {
 			building = building_temple
 			available = {
 				exists = owner
@@ -317,10 +281,50 @@ automate_eca_mining = {
 			}
 		}
 
-		13 = {
+		# Production booster - NPV=9 (low, but scales with miner count)
+		9 = {
+			building = building_mineral_purification_plant
+		}
+
+		# Amenity emergency - NPV=1273 but only fires when amenities < 3
+		10 = {
 			building = building_holo_theatres
 			available = {
 				free_amenities < 3
+			}
+		}
+
+		# Strategic plants - negative NPV, deficit + buffer only
+		11 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
+			}
+		}
+
+		12 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
+			}
+		}
+
+		13 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 	}
@@ -345,27 +349,26 @@ automate_eca_generator = {
 	}
 
 	buildings = {
+		# Deposit extractors first - NPV=1124 each, essentially free income
 		1 = {
-			building = building_energy_grid
-		}
-
-		2 = {
-			building = building_generator_districts_1
-		}
-
-		3 = {
-			building = building_mote_harvesters
-		}
-
-		4 = {
 			building = building_crystal_mines
 		}
 
-		5 = {
+		2 = {
+			building = building_mote_harvesters
+		}
+
+		3 = {
 			building = building_gas_extractors
 		}
 
-		6 = {
+		# District capacity upgrade
+		4 = {
+			building = building_generator_districts_1
+		}
+
+		# Gene clinic - pop growth + amenities
+		5 = {
 			building = building_medical_1
 			available = {
 				free_amenities < 8
@@ -373,7 +376,8 @@ automate_eca_generator = {
 			}
 		}
 
-		7 = {
+		# Off-designation support - NPV=1133, deficit-conditional
+		6 = {
 			building = building_foundry_1
 			available = {
 				exists = owner
@@ -384,7 +388,7 @@ automate_eca_generator = {
 			}
 		}
 
-		8 = {
+		7 = {
 			building = building_factory_1
 			available = {
 				exists = owner
@@ -396,40 +400,8 @@ automate_eca_generator = {
 			}
 		}
 
-		9 = {
-			building = building_chemical_plant
-			available = {
-				exists = owner
-				owner = {
-					eca_has_volatile_mote_deficit = yes
-					eca_can_afford_strategic_upkeep = yes
-				}
-			}
-		}
-
-		10 = {
-			building = building_crystal_plant
-			available = {
-				exists = owner
-				owner = {
-					eca_has_rare_crystal_deficit = yes
-					eca_can_afford_strategic_upkeep = yes
-				}
-			}
-		}
-
-		11 = {
-			building = building_refinery
-			available = {
-				exists = owner
-				owner = {
-					eca_has_exotic_gas_deficit = yes
-					eca_can_afford_strategic_upkeep = yes
-				}
-			}
-		}
-
-		12_admin = {
+		# Unity - NPV=1133
+		8_admin = {
 			building = building_bureaucratic_1
 			available = {
 				exists = owner
@@ -441,7 +413,7 @@ automate_eca_generator = {
 			}
 		}
 
-		12_temple = {
+		8_temple = {
 			building = building_temple
 			available = {
 				exists = owner
@@ -455,10 +427,50 @@ automate_eca_generator = {
 			}
 		}
 
-		13 = {
+		# Production booster - NPV=-51 (negative! but scales with technician count)
+		9 = {
+			building = building_energy_grid
+		}
+
+		# Amenity emergency
+		10 = {
 			building = building_holo_theatres
 			available = {
 				free_amenities < 3
+			}
+		}
+
+		# Strategic plants - negative NPV, deficit + buffer only
+		11 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
+			}
+		}
+
+		12 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
+			}
+		}
+
+		13 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 	}
@@ -483,27 +495,26 @@ automate_eca_farming = {
 	}
 
 	buildings = {
+		# Deposit extractors first - NPV=1124 each, essentially free income
 		1 = {
-			building = building_food_processing_facility
+			building = building_crystal_mines
 		}
 
 		2 = {
-			building = building_farming_districts_1
+			building = building_mote_harvesters
 		}
 
 		3 = {
 			building = building_gas_extractors
 		}
 
+		# District capacity upgrade
 		4 = {
-			building = building_crystal_mines
+			building = building_farming_districts_1
 		}
 
+		# Gene clinic - pop growth + amenities
 		5 = {
-			building = building_mote_harvesters
-		}
-
-		6 = {
 			building = building_medical_1
 			available = {
 				free_amenities < 8
@@ -511,7 +522,8 @@ automate_eca_farming = {
 			}
 		}
 
-		7 = {
+		# Off-designation support - NPV=1133, deficit-conditional
+		6 = {
 			building = building_foundry_1
 			available = {
 				exists = owner
@@ -522,7 +534,7 @@ automate_eca_farming = {
 			}
 		}
 
-		8 = {
+		7 = {
 			building = building_factory_1
 			available = {
 				exists = owner
@@ -534,40 +546,8 @@ automate_eca_farming = {
 			}
 		}
 
-		9 = {
-			building = building_chemical_plant
-			available = {
-				exists = owner
-				owner = {
-					eca_has_volatile_mote_deficit = yes
-					eca_can_afford_strategic_upkeep = yes
-				}
-			}
-		}
-
-		10 = {
-			building = building_crystal_plant
-			available = {
-				exists = owner
-				owner = {
-					eca_has_rare_crystal_deficit = yes
-					eca_can_afford_strategic_upkeep = yes
-				}
-			}
-		}
-
-		11 = {
-			building = building_refinery
-			available = {
-				exists = owner
-				owner = {
-					eca_has_exotic_gas_deficit = yes
-					eca_can_afford_strategic_upkeep = yes
-				}
-			}
-		}
-
-		12_admin = {
+		# Unity - NPV=1133
+		8_admin = {
 			building = building_bureaucratic_1
 			available = {
 				exists = owner
@@ -579,7 +559,7 @@ automate_eca_farming = {
 			}
 		}
 
-		12_temple = {
+		8_temple = {
 			building = building_temple
 			available = {
 				exists = owner
@@ -593,10 +573,50 @@ automate_eca_farming = {
 			}
 		}
 
-		13 = {
+		# Production booster - NPV=-51 (negative! but scales with farmer count)
+		9 = {
+			building = building_food_processing_facility
+		}
+
+		# Amenity emergency
+		10 = {
 			building = building_holo_theatres
 			available = {
 				free_amenities < 3
+			}
+		}
+
+		# Strategic plants - negative NPV, deficit + buffer only
+		11 = {
+			building = building_refinery
+			available = {
+				exists = owner
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
+			}
+		}
+
+		12 = {
+			building = building_chemical_plant
+			available = {
+				exists = owner
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
+			}
+		}
+
+		13 = {
+			building = building_crystal_plant
+			available = {
+				exists = owner
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 	}
@@ -611,8 +631,8 @@ automate_eca_foundry = {
 		has_designation = col_eca_foundry
 	}
 
+	# No district_city here - it creates clerks not metallurgists (NPV=-124)
 	prio_districts = {
-		district_city
 		district_arcology_housing
 		district_rw_city
 	}
@@ -745,8 +765,8 @@ automate_eca_factory = {
 		has_designation = col_eca_factory
 	}
 
+	# No district_city here - it creates clerks not artisans (NPV=-124)
 	prio_districts = {
-		district_city
 		district_arcology_housing
 		district_rw_city
 	}
@@ -877,8 +897,8 @@ automate_eca_research = {
 		has_designation = col_eca_research
 	}
 
+	# No district_city here - it creates clerks not researchers (NPV=-124)
 	prio_districts = {
-		district_city
 		district_arcology_housing
 		district_rw_city
 		district_hab_science
@@ -1026,8 +1046,8 @@ automate_eca_industrial = {
 		has_designation = col_eca_industrial
 	}
 
+	# No district_city here - it creates clerks not specialists (NPV=-124)
 	prio_districts = {
-		district_city
 		district_arcology_housing
 		district_rw_city
 	}

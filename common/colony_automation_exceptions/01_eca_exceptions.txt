@@ -1,6 +1,43 @@
 # Enhanced Colony Automation AI - Emergency Exceptions
-# 1) Build pop growth buildings (gene clinic) even without free pops
+# 1) Build pop growth buildings (gene clinic, robot assembly) even without free pops
 # 2) Proactive district/zone building: target 1 open job at all times
+# 3) Deficit-reactive building: build production even without free pops if empire has deficit
+
+# ===== POP GROWTH: Robot Assembly =====
+# Build robot assembly plant on ECA planets if empire can afford 2x the alloy upkeep.
+# Roboticist costs 2 alloys/month, so require 4+ alloy surplus.
+automate_eca_robot_assembly = {
+	available = {
+		OR = {
+			has_designation = col_eca_capital
+			has_designation = col_eca_mining
+			has_designation = col_eca_generator
+			has_designation = col_eca_farming
+			has_designation = col_eca_foundry
+			has_designation = col_eca_factory
+			has_designation = col_eca_research
+			has_designation = col_eca_industrial
+		}
+		free_building_slots > 0
+		can_assemble_robot = yes
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			NOT = { has_policy_flag = robots_outlawed }
+			NOT = { has_ascension_perk = ap_engineered_evolution }
+			eca_can_afford_robot_assembly_upkeep = yes
+		}
+	}
+
+	emergency = yes
+	category = "planet_automation_pop_assembly"
+
+	buildings = {
+		assembly = {
+			building = building_robot_assembly_plant
+		}
+	}
+}
 
 # ===== POP GROWTH: Gene Clinic =====
 # Build gene clinic as emergency on ECA planets regardless of free pops
@@ -35,15 +72,24 @@ automate_eca_gene_clinic = {
 }
 
 # ===== PROACTIVE DISTRICTS =====
-# Build the next district/zone when all pops have jobs and no relevant jobs are open.
-# This keeps ~1 job opening ready for the next pop that grows.
+# Build the next district/zone when:
+#   A) All pops have jobs and no relevant jobs are open (proactive), OR
+#   B) Empire has a deficit in the relevant resource (deficit-reactive)
+# This keeps ~1 job opening ready for the next pop, and also responds to deficits.
 
 automate_eca_proactive_mining = {
 	available = {
 		has_designation = col_eca_mining
-		NOT = { any_owned_pop_group = { is_unemployed = yes } }
-		NOT = { has_available_jobs = miner }
 		free_district_slots > 0
+		OR = {
+			# Proactive: all employed, no open mining jobs
+			AND = {
+				NOT = { any_owned_pop_group = { is_unemployed = yes } }
+				NOT = { has_available_jobs = miner }
+			}
+			# Deficit-reactive: empire needs minerals
+			owner = { eca_has_mineral_deficit = yes }
+		}
 	}
 
 	emergency = yes
@@ -58,9 +104,14 @@ automate_eca_proactive_mining = {
 automate_eca_proactive_generator = {
 	available = {
 		has_designation = col_eca_generator
-		NOT = { any_owned_pop_group = { is_unemployed = yes } }
-		NOT = { has_available_jobs = technician }
 		free_district_slots > 0
+		OR = {
+			AND = {
+				NOT = { any_owned_pop_group = { is_unemployed = yes } }
+				NOT = { has_available_jobs = technician }
+			}
+			owner = { eca_has_energy_deficit = yes }
+		}
 	}
 
 	emergency = yes
@@ -75,9 +126,14 @@ automate_eca_proactive_generator = {
 automate_eca_proactive_farming = {
 	available = {
 		has_designation = col_eca_farming
-		NOT = { any_owned_pop_group = { is_unemployed = yes } }
-		NOT = { has_available_jobs = farmer }
 		free_district_slots > 0
+		OR = {
+			AND = {
+				NOT = { any_owned_pop_group = { is_unemployed = yes } }
+				NOT = { has_available_jobs = farmer }
+			}
+			owner = { eca_has_food_deficit = yes }
+		}
 	}
 
 	emergency = yes
@@ -92,11 +148,16 @@ automate_eca_proactive_farming = {
 automate_eca_proactive_foundry = {
 	available = {
 		has_designation = col_eca_foundry
-		NOT = { any_owned_pop_group = { is_unemployed = yes } }
-		NOT = { has_available_jobs = metallurgist }
 		free_district_slots > 0
 		exists = owner
 		owner = { eca_can_afford_foundry_upkeep = yes }
+		OR = {
+			AND = {
+				NOT = { any_owned_pop_group = { is_unemployed = yes } }
+				NOT = { has_available_jobs = foundry }
+			}
+			owner = { eca_has_alloy_deficit = yes }
+		}
 	}
 
 	emergency = yes
@@ -110,11 +171,16 @@ automate_eca_proactive_foundry = {
 automate_eca_proactive_factory = {
 	available = {
 		has_designation = col_eca_factory
-		NOT = { any_owned_pop_group = { is_unemployed = yes } }
-		NOT = { has_available_jobs = artisan }
 		free_district_slots > 0
 		exists = owner
 		owner = { eca_can_afford_factory_upkeep = yes }
+		OR = {
+			AND = {
+				NOT = { any_owned_pop_group = { is_unemployed = yes } }
+				NOT = { has_available_jobs = artisan }
+			}
+			owner = { eca_has_consumer_goods_deficit = yes }
+		}
 	}
 
 	emergency = yes
@@ -128,11 +194,18 @@ automate_eca_proactive_factory = {
 automate_eca_proactive_research = {
 	available = {
 		has_designation = col_eca_research
-		NOT = { any_owned_pop_group = { is_unemployed = yes } }
-		NOT = { has_available_jobs = researcher }
 		free_district_slots > 0
 		exists = owner
 		owner = { eca_can_afford_research_upkeep = yes }
+		OR = {
+			AND = {
+				NOT = { any_owned_pop_group = { is_unemployed = yes } }
+				NOT = { has_available_jobs = physicist }
+				NOT = { has_available_jobs = biologist }
+				NOT = { has_available_jobs = engineer }
+			}
+			# Research doesn't have a "deficit" — always build proactively
+		}
 	}
 
 	emergency = yes
@@ -146,14 +219,20 @@ automate_eca_proactive_research = {
 automate_eca_proactive_industrial = {
 	available = {
 		has_designation = col_eca_industrial
-		NOT = { any_owned_pop_group = { is_unemployed = yes } }
-		NOT = { has_available_jobs = metallurgist }
-		NOT = { has_available_jobs = artisan }
 		free_district_slots > 0
 		exists = owner
 		owner = {
 			eca_can_afford_foundry_upkeep = yes
 			eca_can_afford_factory_upkeep = yes
+		}
+		OR = {
+			AND = {
+				NOT = { any_owned_pop_group = { is_unemployed = yes } }
+				NOT = { has_available_jobs = foundry }
+				NOT = { has_available_jobs = artisan }
+			}
+			owner = { eca_has_alloy_deficit = yes }
+			owner = { eca_has_consumer_goods_deficit = yes }
 		}
 	}
 
@@ -168,12 +247,21 @@ automate_eca_proactive_industrial = {
 automate_eca_proactive_capital = {
 	available = {
 		has_designation = col_eca_capital
-		NOT = { any_owned_pop_group = { is_unemployed = yes } }
-		NOT = { has_available_jobs = researcher }
-		NOT = { has_available_jobs = metallurgist }
-		NOT = { has_available_jobs = entertainer }
-		NOT = { has_available_jobs = clerk }
 		free_district_slots > 0
+		OR = {
+			AND = {
+				NOT = { any_owned_pop_group = { is_unemployed = yes } }
+				NOT = { has_available_jobs = physicist }
+				NOT = { has_available_jobs = biologist }
+				NOT = { has_available_jobs = engineer }
+				NOT = { has_available_jobs = foundry }
+				NOT = { has_available_jobs = entertainer }
+				NOT = { has_available_jobs = clerk }
+			}
+			owner = { eca_has_alloy_deficit = yes }
+			owner = { eca_has_consumer_goods_deficit = yes }
+			owner = { eca_has_energy_deficit = yes }
+		}
 	}
 
 	emergency = yes
@@ -193,5 +281,162 @@ automate_eca_proactive_capital = {
 		zone_energy
 		zone_food
 		zone_minerals
+	}
+}
+
+# ===== DEFICIT-REACTIVE BUILDING =====
+# Build production buildings even without free pops when the empire has a deficit.
+# The building sits idle until a pop grows into the job, but for deficits the
+# tradeoff is worth it — the pop immediately starts producing what's needed.
+# These fire on ANY ECA designation (a mining world should build a factory if
+# the empire desperately needs consumer goods).
+
+automate_eca_deficit_alloys = {
+	available = {
+		OR = {
+			has_designation = col_eca_capital
+			has_designation = col_eca_mining
+			has_designation = col_eca_generator
+			has_designation = col_eca_farming
+			has_designation = col_eca_foundry
+			has_designation = col_eca_factory
+			has_designation = col_eca_research
+			has_designation = col_eca_industrial
+		}
+		free_building_slots > 0
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			eca_has_alloy_deficit = yes
+			eca_can_afford_foundry_upkeep = yes
+		}
+	}
+
+	emergency = yes
+	category = "planet_automation_designation_construction"
+
+	buildings = {
+		alloy_foundry = {
+			building = building_foundry_1
+		}
+	}
+}
+
+automate_eca_deficit_consumer_goods = {
+	available = {
+		OR = {
+			has_designation = col_eca_capital
+			has_designation = col_eca_mining
+			has_designation = col_eca_generator
+			has_designation = col_eca_farming
+			has_designation = col_eca_foundry
+			has_designation = col_eca_factory
+			has_designation = col_eca_research
+			has_designation = col_eca_industrial
+		}
+		free_building_slots > 0
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			country_uses_consumer_goods = yes
+			eca_has_consumer_goods_deficit = yes
+			eca_can_afford_factory_upkeep = yes
+		}
+	}
+
+	emergency = yes
+	category = "planet_automation_designation_construction"
+
+	buildings = {
+		consumer_goods_factory = {
+			building = building_factory_1
+		}
+	}
+}
+
+automate_eca_deficit_energy = {
+	available = {
+		OR = {
+			has_designation = col_eca_capital
+			has_designation = col_eca_mining
+			has_designation = col_eca_generator
+			has_designation = col_eca_farming
+			has_designation = col_eca_foundry
+			has_designation = col_eca_factory
+			has_designation = col_eca_research
+			has_designation = col_eca_industrial
+		}
+		free_district_slots > 0
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			eca_has_severe_energy_deficit = yes
+		}
+	}
+
+	emergency = yes
+	category = "planet_automation_designation_construction"
+
+	prio_districts = {
+		district_generator
+		district_generator_uncapped
+	}
+}
+
+automate_eca_deficit_minerals = {
+	available = {
+		OR = {
+			has_designation = col_eca_capital
+			has_designation = col_eca_mining
+			has_designation = col_eca_generator
+			has_designation = col_eca_farming
+			has_designation = col_eca_foundry
+			has_designation = col_eca_factory
+			has_designation = col_eca_research
+			has_designation = col_eca_industrial
+		}
+		free_district_slots > 0
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			eca_has_severe_mineral_deficit = yes
+		}
+	}
+
+	emergency = yes
+	category = "planet_automation_designation_construction"
+
+	prio_districts = {
+		district_mining
+		district_mining_uncapped
+	}
+}
+
+automate_eca_deficit_food = {
+	available = {
+		OR = {
+			has_designation = col_eca_capital
+			has_designation = col_eca_mining
+			has_designation = col_eca_generator
+			has_designation = col_eca_farming
+			has_designation = col_eca_foundry
+			has_designation = col_eca_factory
+			has_designation = col_eca_research
+			has_designation = col_eca_industrial
+		}
+		free_district_slots > 0
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			eca_has_severe_food_deficit = yes
+		}
+	}
+
+	emergency = yes
+	category = "planet_automation_designation_construction"
+
+	prio_districts = {
+		district_farming
+		district_farming_uncapped
 	}
 }

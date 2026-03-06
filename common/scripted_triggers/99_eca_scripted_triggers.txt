@@ -120,6 +120,11 @@ eca_can_afford_energy_upkeep = {
 	has_monthly_income = { resource = energy value >= 4 }
 }
 
+# Roboticist costs 2 alloys/month → need 4+ surplus
+eca_can_afford_robot_assembly_upkeep = {
+	has_monthly_income = { resource = alloys value >= 4 }
+}
+
 # ===== REGULAR EMPIRE GUARD (planet scope) =====
 
 eca_is_regular_empire_planet = {
