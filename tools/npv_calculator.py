@@ -193,6 +193,69 @@ def compute_payback(building_id: str) -> float:
     return c0 / net if net > 0 else float("inf")
 
 
+# Build cost tiers for 2x stockpile triggers
+# Maps mineral build cost → scripted trigger name
+BUILD_COST_TIERS = {
+    200: "eca_can_afford_build_cost_200",
+    300: "eca_can_afford_build_cost_300",
+    400: "eca_can_afford_build_cost_400",
+    500: "eca_can_afford_build_cost_500",
+    600: "eca_can_afford_build_cost_600",
+}
+
+# Buildings not in BUILDING_ECONOMICS that we know the cost of
+KNOWN_BUILD_COSTS = {
+    # Unique buildings (400 minerals each)
+    "building_embassy": 400,
+    "building_autochthon_monument": 400,
+    "building_corporate_monument": 400,
+    "building_vultaum_reality_computer": 400,
+    "building_institute": 400,
+    "building_archaeostudies_faculty": 400,
+    "building_autocurating_vault": 400,
+    "building_citadel_of_faith": 400,
+    "building_corporate_vault": 400,
+    "building_ministry_production": 400,
+    "building_production_center": 400,
+    "building_supercomputer": 400,
+    "building_robot_assembly_plant": 400,
+    # Efficiency/upkeep buildings
+    "building_foundry_efficiency_1": 400,
+    "building_foundry_upkeep_1": 400,
+    "building_factory_efficiency_1": 400,
+    "building_factory_upkeep_1": 400,
+    "building_research_efficiency_1": 400,
+    "building_research_upkeep_1": 400,
+    # District capacity upgrades
+    "building_mining_districts_1": 400,
+    "building_generator_districts_1": 400,
+    "building_farming_districts_1": 400,
+    # Research labs (specific types)
+    "building_engineering_facility_1": 400,
+    "building_physics_lab_1": 400,
+    "building_biolab_1": 400,
+}
+
+
+def get_build_cost_trigger(building_id: str) -> str:
+    """Get the 2x stockpile trigger name for a building, or '' if unknown."""
+    # Check BUILDING_ECONOMICS first
+    econ = BUILDING_ECONOMICS.get(building_id)
+    if econ:
+        mineral_cost = econ["build_cost"].get("minerals", 0)
+    elif building_id in KNOWN_BUILD_COSTS:
+        mineral_cost = KNOWN_BUILD_COSTS[building_id]
+    else:
+        return ""
+
+    # Round up to nearest tier
+    for tier in sorted(BUILD_COST_TIERS.keys()):
+        if mineral_cost <= tier:
+            return BUILD_COST_TIERS[tier]
+    # If higher than all tiers, use the highest
+    return BUILD_COST_TIERS[max(BUILD_COST_TIERS.keys())]
+
+
 # ══════════════════════════════════════════════════════════════════════════
 # SECTION 3: AVAILABLE CONDITIONS (Stellaris script blocks)
 # These define the `available = { ... }` conditions for each building.
@@ -689,10 +752,22 @@ def generate_building_block(entry: dict, key_num: int, indent: int = 2) -> str:
     lines.append(f"{prefix}{key} = {{")
     lines.append(f"{prefix}\tbuilding = {entry['building']}")
 
-    if entry.get("available"):
+    # Build the available block: combine explicit conditions + 2x stockpile check
+    cost_trigger = get_build_cost_trigger(entry["building"])
+    has_conditions = bool(entry.get("available"))
+    has_cost_trigger = bool(cost_trigger)
+
+    if has_conditions or has_cost_trigger:
         lines.append(f"{prefix}\tavailable = {{")
-        for cond_line in entry["available"].split("\n"):
-            lines.append(f"{prefix}\t\t{cond_line}")
+        if has_conditions:
+            for cond_line in entry["available"].split("\n"):
+                lines.append(f"{prefix}\t\t{cond_line}")
+        if has_cost_trigger:
+            # Stockpile check is on owner (country scope)
+            # Skip 'exists = owner' if already present in conditions
+            if not has_conditions or "exists = owner" not in entry["available"]:
+                lines.append(f"{prefix}\t\texists = owner")
+            lines.append(f"{prefix}\t\towner = {{ {cost_trigger} = yes }}")
         lines.append(f"{prefix}\t}}")
 
     lines.append(f"{prefix}}}")

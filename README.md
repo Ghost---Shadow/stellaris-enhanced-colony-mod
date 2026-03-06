@@ -14,7 +14,7 @@ Vanilla colony automation has several weaknesses: sparse building priority lists
 - **Deficit-reactive building** — builds production buildings even without free pops when the empire is running a deficit (e.g., a mining world builds a factory if the empire desperately needs consumer goods)
 - **Proactive district/zone building** — builds the next district or zone when all pops are employed, keeping ~1 job opening ready for the next pop
 - **NPV-optimized build order** — building priorities ordered by net present value so the most impactful investments happen first
-- **2x affordability buffer** — only builds expensive buildings (foundries, factories, refineries, robot assemblies) if the empire can afford twice the monthly upkeep
+- **2x affordability buffer** — only builds expensive buildings (foundries, factories, refineries, robot assemblies) if the empire can afford twice the monthly upkeep. This gives the human player breathing room — automated planets won't eat into your resource surplus right before you click that "build" button yourself
 - **Emergency pop growth** — builds gene clinics and robot assembly plants proactively, bypassing the normal "must have free pops" check
 - **Smarter job checks** — uses correct Stellaris 4.x job IDs (`foundry`, `physicist`/`biologist`/`engineer`, etc.)
 
@@ -73,7 +73,7 @@ Reusable triggers in country/planet scope:
 
 - `eca_has_*_deficit` — checks if monthly income is dangerously low
 - `eca_has_severe_*_deficit` — checks for actively negative income
-- `eca_can_afford_*_upkeep` — 2x affordability buffer checks
+- `eca_can_afford_*_upkeep` — 2x affordability buffer checks (requires surplus ≥ 2× the building's monthly upkeep, so automation never steals resources the player is about to spend)
 - `eca_planet_needs_amenities` / `eca_planet_needs_housing` — planet-level checks
 
 ## NPV Calculator

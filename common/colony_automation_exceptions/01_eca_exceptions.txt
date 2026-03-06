@@ -26,6 +26,7 @@ automate_eca_robot_assembly = {
 			NOT = { has_policy_flag = robots_outlawed }
 			NOT = { has_ascension_perk = ap_engineered_evolution }
 			eca_can_afford_robot_assembly_upkeep = yes
+			eca_can_afford_build_cost_400 = yes
 		}
 	}
 
@@ -47,6 +48,7 @@ automate_eca_gene_clinic = {
 		owner = {
 			is_regular_empire = yes
 			is_synthetic_empire = no
+			eca_can_afford_build_cost_400 = yes
 		}
 		OR = {
 			has_designation = col_eca_capital
@@ -71,6 +73,40 @@ automate_eca_gene_clinic = {
 	}
 }
 
+# ===== AMENITIES: Holo Theatre =====
+# Build holo theatre as emergency when amenities are negative, regardless of free pops.
+automate_eca_holo_theatre = {
+	available = {
+		OR = {
+			has_designation = col_eca_capital
+			has_designation = col_eca_mining
+			has_designation = col_eca_generator
+			has_designation = col_eca_farming
+			has_designation = col_eca_foundry
+			has_designation = col_eca_factory
+			has_designation = col_eca_research
+			has_designation = col_eca_industrial
+		}
+		free_building_slots > 0
+		free_amenities < 0
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			is_gestalt = no
+			eca_can_afford_build_cost_400 = yes
+		}
+	}
+
+	emergency = yes
+	category = "planet_automation_amenity"
+
+	buildings = {
+		holo_theatre = {
+			building = building_holo_theatres
+		}
+	}
+}
+
 # ===== PROACTIVE DISTRICTS =====
 # Build the next district/zone when:
 #   A) All pops have jobs and no relevant jobs are open (proactive), OR
@@ -81,6 +117,8 @@ automate_eca_proactive_mining = {
 	available = {
 		has_designation = col_eca_mining
 		free_district_slots > 0
+		exists = owner
+		owner = { eca_can_afford_build_cost_300 = yes }
 		OR = {
 			# Proactive: all employed, no open mining jobs
 			AND = {
@@ -105,6 +143,8 @@ automate_eca_proactive_generator = {
 	available = {
 		has_designation = col_eca_generator
 		free_district_slots > 0
+		exists = owner
+		owner = { eca_can_afford_build_cost_300 = yes }
 		OR = {
 			AND = {
 				NOT = { any_owned_pop_group = { is_unemployed = yes } }
@@ -127,6 +167,8 @@ automate_eca_proactive_farming = {
 	available = {
 		has_designation = col_eca_farming
 		free_district_slots > 0
+		exists = owner
+		owner = { eca_can_afford_build_cost_300 = yes }
 		OR = {
 			AND = {
 				NOT = { any_owned_pop_group = { is_unemployed = yes } }
@@ -150,7 +192,10 @@ automate_eca_proactive_foundry = {
 		has_designation = col_eca_foundry
 		free_district_slots > 0
 		exists = owner
-		owner = { eca_can_afford_foundry_upkeep = yes }
+		owner = {
+			eca_can_afford_foundry_upkeep = yes
+			eca_can_afford_build_cost_400 = yes
+		}
 		OR = {
 			AND = {
 				NOT = { any_owned_pop_group = { is_unemployed = yes } }
@@ -173,7 +218,10 @@ automate_eca_proactive_factory = {
 		has_designation = col_eca_factory
 		free_district_slots > 0
 		exists = owner
-		owner = { eca_can_afford_factory_upkeep = yes }
+		owner = {
+			eca_can_afford_factory_upkeep = yes
+			eca_can_afford_build_cost_400 = yes
+		}
 		OR = {
 			AND = {
 				NOT = { any_owned_pop_group = { is_unemployed = yes } }
@@ -196,7 +244,10 @@ automate_eca_proactive_research = {
 		has_designation = col_eca_research
 		free_district_slots > 0
 		exists = owner
-		owner = { eca_can_afford_research_upkeep = yes }
+		owner = {
+			eca_can_afford_research_upkeep = yes
+			eca_can_afford_build_cost_400 = yes
+		}
 		OR = {
 			AND = {
 				NOT = { any_owned_pop_group = { is_unemployed = yes } }
@@ -224,6 +275,7 @@ automate_eca_proactive_industrial = {
 		owner = {
 			eca_can_afford_foundry_upkeep = yes
 			eca_can_afford_factory_upkeep = yes
+			eca_can_afford_build_cost_400 = yes
 		}
 		OR = {
 			AND = {
@@ -248,6 +300,8 @@ automate_eca_proactive_capital = {
 	available = {
 		has_designation = col_eca_capital
 		free_district_slots > 0
+		exists = owner
+		owner = { eca_can_afford_build_cost_500 = yes }
 		OR = {
 			AND = {
 				NOT = { any_owned_pop_group = { is_unemployed = yes } }
@@ -309,6 +363,27 @@ automate_eca_deficit_alloys = {
 			is_regular_empire = yes
 			eca_has_alloy_deficit = yes
 			eca_can_afford_foundry_upkeep = yes
+			eca_can_afford_build_cost_400 = yes
+		}
+		# Prefer dedicated foundry/industrial worlds — only build off-designation if none have room
+		OR = {
+			has_designation = col_eca_foundry
+			has_designation = col_eca_industrial
+			has_designation = col_foundry
+			has_designation = col_industrial
+			owner = {
+				NOT = {
+					any_owned_planet = {
+						OR = {
+							has_designation = col_eca_foundry
+							has_designation = col_eca_industrial
+							has_designation = col_foundry
+							has_designation = col_industrial
+						}
+						free_building_slots > 0
+					}
+				}
+			}
 		}
 	}
 
@@ -341,6 +416,27 @@ automate_eca_deficit_consumer_goods = {
 			country_uses_consumer_goods = yes
 			eca_has_consumer_goods_deficit = yes
 			eca_can_afford_factory_upkeep = yes
+			eca_can_afford_build_cost_400 = yes
+		}
+		# Prefer dedicated factory/industrial worlds — only build off-designation if none have room
+		OR = {
+			has_designation = col_eca_factory
+			has_designation = col_eca_industrial
+			has_designation = col_factory
+			has_designation = col_industrial
+			owner = {
+				NOT = {
+					any_owned_planet = {
+						OR = {
+							has_designation = col_eca_factory
+							has_designation = col_eca_industrial
+							has_designation = col_factory
+							has_designation = col_industrial
+						}
+						free_building_slots > 0
+					}
+				}
+			}
 		}
 	}
 
@@ -371,6 +467,23 @@ automate_eca_deficit_energy = {
 		owner = {
 			is_regular_empire = yes
 			eca_has_severe_energy_deficit = yes
+			eca_can_afford_build_cost_300 = yes
+		}
+		# Prefer dedicated generator worlds — only build off-designation if none have room
+		OR = {
+			has_designation = col_eca_generator
+			has_designation = col_generator
+			owner = {
+				NOT = {
+					any_owned_planet = {
+						OR = {
+							has_designation = col_eca_generator
+							has_designation = col_generator
+						}
+						free_district_slots > 0
+					}
+				}
+			}
 		}
 	}
 
@@ -400,6 +513,23 @@ automate_eca_deficit_minerals = {
 		owner = {
 			is_regular_empire = yes
 			eca_has_severe_mineral_deficit = yes
+			eca_can_afford_build_cost_300 = yes
+		}
+		# Prefer dedicated mining worlds — only build off-designation if none have room
+		OR = {
+			has_designation = col_eca_mining
+			has_designation = col_mining
+			owner = {
+				NOT = {
+					any_owned_planet = {
+						OR = {
+							has_designation = col_eca_mining
+							has_designation = col_mining
+						}
+						free_district_slots > 0
+					}
+				}
+			}
 		}
 	}
 
@@ -429,6 +559,23 @@ automate_eca_deficit_food = {
 		owner = {
 			is_regular_empire = yes
 			eca_has_severe_food_deficit = yes
+			eca_can_afford_build_cost_300 = yes
+		}
+		# Prefer dedicated farming worlds — only build off-designation if none have room
+		OR = {
+			has_designation = col_eca_farming
+			has_designation = col_farming
+			owner = {
+				NOT = {
+					any_owned_planet = {
+						OR = {
+							has_designation = col_eca_farming
+							has_designation = col_farming
+						}
+						free_district_slots > 0
+					}
+				}
+			}
 		}
 	}
 

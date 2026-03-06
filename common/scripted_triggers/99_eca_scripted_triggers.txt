@@ -125,6 +125,36 @@ eca_can_afford_robot_assembly_upkeep = {
 	has_monthly_income = { resource = alloys value >= 4 }
 }
 
+# ===== 2x UPFRONT COST BUFFER TRIGGERS (country scope) =====
+# "Don't buy it unless you have 2x the price in the bank"
+# Checks mineral stockpile >= 2x the building's mineral build cost.
+
+# 200 mineral buildings (deposit extractors, mineral purification) → need 400 in stockpile
+eca_can_afford_build_cost_200 = {
+	has_resource = { type = minerals amount >= 400 }
+}
+
+# 300 mineral buildings/districts (mining, generator, farming districts) → need 600
+eca_can_afford_build_cost_300 = {
+	has_resource = { type = minerals amount >= 600 }
+}
+
+# 400 mineral buildings (foundry, factory, research lab, holo theatre, gene clinic,
+# admin office, temple, robot assembly, energy grid, food processing) → need 800
+eca_can_afford_build_cost_400 = {
+	has_resource = { type = minerals amount >= 800 }
+}
+
+# 500 mineral buildings/districts (city district, refinery) → need 1000
+eca_can_afford_build_cost_500 = {
+	has_resource = { type = minerals amount >= 1000 }
+}
+
+# 600 mineral buildings (chemical plant, crystal plant) → need 1200
+eca_can_afford_build_cost_600 = {
+	has_resource = { type = minerals amount >= 1200 }
+}
+
 # ===== REGULAR EMPIRE GUARD (planet scope) =====
 
 eca_is_regular_empire_planet = {
