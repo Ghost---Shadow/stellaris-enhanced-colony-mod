@@ -91,6 +91,35 @@ eca_is_late_game = {
 	years_passed >= 75
 }
 
+# ===== 2x AFFORDABILITY BUFFER TRIGGERS (country scope) =====
+# "Only buy it if you have 2x the cost" - prevents draining economy
+# Values are ~2x the typical monthly upkeep of the relevant building type
+
+# Research labs cost ~2 CG/month → need 4+ surplus
+eca_can_afford_research_upkeep = {
+	has_monthly_income = { resource = consumer_goods value >= 4 }
+}
+
+# Foundries cost ~6 minerals/month → need 12+ surplus
+eca_can_afford_foundry_upkeep = {
+	has_monthly_income = { resource = minerals value >= 12 }
+}
+
+# Factories cost ~6 minerals/month → need 12+ surplus
+eca_can_afford_factory_upkeep = {
+	has_monthly_income = { resource = minerals value >= 12 }
+}
+
+# Strategic resource plants cost ~10 minerals/month → need 20+ surplus
+eca_can_afford_strategic_upkeep = {
+	has_monthly_income = { resource = minerals value >= 20 }
+}
+
+# General energy upkeep buffer (~2 energy/month buildings) → need 4+ surplus
+eca_can_afford_energy_upkeep = {
+	has_monthly_income = { resource = energy value >= 4 }
+}
+
 # ===== REGULAR EMPIRE GUARD (planet scope) =====
 
 eca_is_regular_empire_planet = {

@@ -1,5 +1,6 @@
 # Enhanced Colony Automation AI - Automation for new ECA designations
 # All valid for Stellaris 4.x - no invalid districts/zones/buildings.
+# Uses 2x affordability buffer: only build if surplus >= 2x upkeep cost.
 
 # ===== ENHANCED CAPITAL =====
 
@@ -71,12 +72,13 @@ automate_eca_capital = {
 			}
 		}
 
-		# Alloy foundry - capitals should produce alloys early
+		# Alloy foundry - 2x buffer check on minerals
 		8 = {
 			building = building_foundry_1
 			available = {
 				exists = owner
 				owner = {
+					eca_can_afford_foundry_upkeep = yes
 					OR = {
 						eca_has_alloy_deficit = yes
 						eca_is_early_game = yes
@@ -85,13 +87,14 @@ automate_eca_capital = {
 			}
 		}
 
-		# Consumer goods factory
+		# Consumer goods factory - 2x buffer check on minerals
 		9 = {
 			building = building_factory_1
 			available = {
 				exists = owner
 				owner = {
 					country_uses_consumer_goods = yes
+					eca_can_afford_factory_upkeep = yes
 					OR = {
 						eca_has_consumer_goods_deficit = yes
 						eca_is_early_game = yes
@@ -100,9 +103,41 @@ automate_eca_capital = {
 			}
 		}
 
-		# Research lab
+		# Research lab - 2x buffer check on CG
 		10 = {
 			building = building_research_lab_1
+			available = {
+				exists = owner
+				owner = { eca_can_afford_research_upkeep = yes }
+			}
+		}
+
+		# Administrative office - unity (non-spiritualist)
+		10_admin = {
+			building = building_bureaucratic_1
+			available = {
+				exists = owner
+				owner = {
+					is_spiritualist = no
+					has_make_spiritualist_perk = no
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		# Temple - unity (spiritualist)
+		10_temple = {
+			building = building_temple
+			available = {
+				exists = owner
+				owner = {
+					OR = {
+						is_spiritualist = yes
+						has_make_spiritualist_perk = yes
+					}
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
 		}
 
 		# Holo theatre for amenity coverage
@@ -118,7 +153,10 @@ automate_eca_capital = {
 			building = building_refinery
 			available = {
 				exists = owner
-				owner = { eca_has_exotic_gas_deficit = yes }
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -126,7 +164,10 @@ automate_eca_capital = {
 			building = building_chemical_plant
 			available = {
 				exists = owner
-				owner = { eca_has_volatile_mote_deficit = yes }
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -134,7 +175,10 @@ automate_eca_capital = {
 			building = building_crystal_plant
 			available = {
 				exists = owner
-				owner = { eca_has_rare_crystal_deficit = yes }
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 	}
@@ -159,6 +203,7 @@ automate_eca_mining = {
 	}
 
 	buildings = {
+		# Production boosters - no buffer needed (they improve existing output)
 		1 = {
 			building = building_mineral_purification_plant
 		}
@@ -167,6 +212,7 @@ automate_eca_mining = {
 			building = building_mining_districts_1
 		}
 
+		# Deposit extractors - essentially free income, no buffer
 		3 = {
 			building = building_crystal_mines
 		}
@@ -187,11 +233,15 @@ automate_eca_mining = {
 			}
 		}
 
+		# Off-designation support - 2x buffer required
 		7 = {
 			building = building_foundry_1
 			available = {
 				exists = owner
-				owner = { eca_has_alloy_deficit = yes }
+				owner = {
+					eca_has_alloy_deficit = yes
+					eca_can_afford_foundry_upkeep = yes
+				}
 			}
 		}
 
@@ -202,15 +252,20 @@ automate_eca_mining = {
 				owner = {
 					eca_has_consumer_goods_deficit = yes
 					country_uses_consumer_goods = yes
+					eca_can_afford_factory_upkeep = yes
 				}
 			}
 		}
 
+		# Strategic plants - deficit + buffer
 		9 = {
 			building = building_chemical_plant
 			available = {
 				exists = owner
-				owner = { eca_has_volatile_mote_deficit = yes }
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -218,7 +273,10 @@ automate_eca_mining = {
 			building = building_crystal_plant
 			available = {
 				exists = owner
-				owner = { eca_has_rare_crystal_deficit = yes }
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -226,11 +284,40 @@ automate_eca_mining = {
 			building = building_refinery
 			available = {
 				exists = owner
-				owner = { eca_has_exotic_gas_deficit = yes }
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
-		12 = {
+		12_admin = {
+			building = building_bureaucratic_1
+			available = {
+				exists = owner
+				owner = {
+					is_spiritualist = no
+					has_make_spiritualist_perk = no
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		12_temple = {
+			building = building_temple
+			available = {
+				exists = owner
+				owner = {
+					OR = {
+						is_spiritualist = yes
+						has_make_spiritualist_perk = yes
+					}
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		13 = {
 			building = building_holo_theatres
 			available = {
 				free_amenities < 3
@@ -290,7 +377,10 @@ automate_eca_generator = {
 			building = building_foundry_1
 			available = {
 				exists = owner
-				owner = { eca_has_alloy_deficit = yes }
+				owner = {
+					eca_has_alloy_deficit = yes
+					eca_can_afford_foundry_upkeep = yes
+				}
 			}
 		}
 
@@ -301,6 +391,7 @@ automate_eca_generator = {
 				owner = {
 					eca_has_consumer_goods_deficit = yes
 					country_uses_consumer_goods = yes
+					eca_can_afford_factory_upkeep = yes
 				}
 			}
 		}
@@ -309,7 +400,10 @@ automate_eca_generator = {
 			building = building_chemical_plant
 			available = {
 				exists = owner
-				owner = { eca_has_volatile_mote_deficit = yes }
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -317,7 +411,10 @@ automate_eca_generator = {
 			building = building_crystal_plant
 			available = {
 				exists = owner
-				owner = { eca_has_rare_crystal_deficit = yes }
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -325,11 +422,40 @@ automate_eca_generator = {
 			building = building_refinery
 			available = {
 				exists = owner
-				owner = { eca_has_exotic_gas_deficit = yes }
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
-		12 = {
+		12_admin = {
+			building = building_bureaucratic_1
+			available = {
+				exists = owner
+				owner = {
+					is_spiritualist = no
+					has_make_spiritualist_perk = no
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		12_temple = {
+			building = building_temple
+			available = {
+				exists = owner
+				owner = {
+					OR = {
+						is_spiritualist = yes
+						has_make_spiritualist_perk = yes
+					}
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		13 = {
 			building = building_holo_theatres
 			available = {
 				free_amenities < 3
@@ -389,7 +515,10 @@ automate_eca_farming = {
 			building = building_foundry_1
 			available = {
 				exists = owner
-				owner = { eca_has_alloy_deficit = yes }
+				owner = {
+					eca_has_alloy_deficit = yes
+					eca_can_afford_foundry_upkeep = yes
+				}
 			}
 		}
 
@@ -400,6 +529,7 @@ automate_eca_farming = {
 				owner = {
 					eca_has_consumer_goods_deficit = yes
 					country_uses_consumer_goods = yes
+					eca_can_afford_factory_upkeep = yes
 				}
 			}
 		}
@@ -408,7 +538,10 @@ automate_eca_farming = {
 			building = building_chemical_plant
 			available = {
 				exists = owner
-				owner = { eca_has_volatile_mote_deficit = yes }
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -416,7 +549,10 @@ automate_eca_farming = {
 			building = building_crystal_plant
 			available = {
 				exists = owner
-				owner = { eca_has_rare_crystal_deficit = yes }
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -424,11 +560,40 @@ automate_eca_farming = {
 			building = building_refinery
 			available = {
 				exists = owner
-				owner = { eca_has_exotic_gas_deficit = yes }
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
-		12 = {
+		12_admin = {
+			building = building_bureaucratic_1
+			available = {
+				exists = owner
+				owner = {
+					is_spiritualist = no
+					has_make_spiritualist_perk = no
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		12_temple = {
+			building = building_temple
+			available = {
+				exists = owner
+				owner = {
+					OR = {
+						is_spiritualist = yes
+						has_make_spiritualist_perk = yes
+					}
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		13 = {
 			building = building_holo_theatres
 			available = {
 				free_amenities < 3
@@ -457,6 +622,7 @@ automate_eca_foundry = {
 	}
 
 	buildings = {
+		# Unique production boosters - no buffer (always worth it)
 		1 = {
 			building = building_ministry_production
 		}
@@ -473,8 +639,13 @@ automate_eca_foundry = {
 			building = building_foundry_upkeep_1
 		}
 
+		# Core foundry - on-designation, but still check mineral buffer
 		5 = {
 			building = building_foundry_1
+			available = {
+				exists = owner
+				owner = { eca_can_afford_foundry_upkeep = yes }
+			}
 		}
 
 		6 = {
@@ -489,7 +660,36 @@ automate_eca_foundry = {
 			building = building_chemical_plant
 			available = {
 				exists = owner
-				owner = { eca_has_volatile_mote_deficit = yes }
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
+			}
+		}
+
+		8_admin = {
+			building = building_bureaucratic_1
+			available = {
+				exists = owner
+				owner = {
+					is_spiritualist = no
+					has_make_spiritualist_perk = no
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		8_temple = {
+			building = building_temple
+			available = {
+				exists = owner
+				owner = {
+					OR = {
+						is_spiritualist = yes
+						has_make_spiritualist_perk = yes
+					}
+					eca_can_afford_energy_upkeep = yes
+				}
 			}
 		}
 
@@ -504,7 +704,10 @@ automate_eca_foundry = {
 			building = building_crystal_plant
 			available = {
 				exists = owner
-				owner = { eca_has_rare_crystal_deficit = yes }
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -512,7 +715,10 @@ automate_eca_foundry = {
 			building = building_refinery
 			available = {
 				exists = owner
-				owner = { eca_has_exotic_gas_deficit = yes }
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -523,6 +729,7 @@ automate_eca_foundry = {
 				owner = {
 					eca_has_consumer_goods_deficit = yes
 					country_uses_consumer_goods = yes
+					eca_can_afford_factory_upkeep = yes
 				}
 			}
 		}
@@ -565,8 +772,13 @@ automate_eca_factory = {
 			building = building_factory_upkeep_1
 		}
 
+		# Core factory - on-designation, but check mineral buffer
 		5 = {
 			building = building_factory_1
+			available = {
+				exists = owner
+				owner = { eca_can_afford_factory_upkeep = yes }
+			}
 		}
 
 		6 = {
@@ -581,7 +793,36 @@ automate_eca_factory = {
 			building = building_crystal_plant
 			available = {
 				exists = owner
-				owner = { eca_has_rare_crystal_deficit = yes }
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
+			}
+		}
+
+		8_admin = {
+			building = building_bureaucratic_1
+			available = {
+				exists = owner
+				owner = {
+					is_spiritualist = no
+					has_make_spiritualist_perk = no
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		8_temple = {
+			building = building_temple
+			available = {
+				exists = owner
+				owner = {
+					OR = {
+						is_spiritualist = yes
+						has_make_spiritualist_perk = yes
+					}
+					eca_can_afford_energy_upkeep = yes
+				}
 			}
 		}
 
@@ -596,7 +837,10 @@ automate_eca_factory = {
 			building = building_chemical_plant
 			available = {
 				exists = owner
-				owner = { eca_has_volatile_mote_deficit = yes }
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -604,7 +848,10 @@ automate_eca_factory = {
 			building = building_refinery
 			available = {
 				exists = owner
-				owner = { eca_has_exotic_gas_deficit = yes }
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -612,7 +859,10 @@ automate_eca_factory = {
 			building = building_foundry_1
 			available = {
 				exists = owner
-				owner = { eca_has_alloy_deficit = yes }
+				owner = {
+					eca_has_alloy_deficit = yes
+					eca_can_afford_foundry_upkeep = yes
+				}
 			}
 		}
 	}
@@ -640,6 +890,7 @@ automate_eca_research = {
 	}
 
 	buildings = {
+		# Unique buildings - no buffer (one-per-empire, always worth it)
 		1 = {
 			building = building_vultaum_reality_computer
 		}
@@ -656,6 +907,7 @@ automate_eca_research = {
 			building = building_archaeostudies_faculty
 		}
 
+		# Efficiency/upkeep boosters - no buffer (they save money)
 		5 = {
 			building = building_research_efficiency_1
 		}
@@ -664,16 +916,29 @@ automate_eca_research = {
 			building = building_research_upkeep_1
 		}
 
+		# Stackable research labs - 2x CG buffer required
 		7 = {
 			building = building_engineering_facility_1
+			available = {
+				exists = owner
+				owner = { eca_can_afford_research_upkeep = yes }
+			}
 		}
 
 		8 = {
 			building = building_physics_lab_1
+			available = {
+				exists = owner
+				owner = { eca_can_afford_research_upkeep = yes }
+			}
 		}
 
 		9 = {
 			building = building_biolab_1
+			available = {
+				exists = owner
+				owner = { eca_can_afford_research_upkeep = yes }
+			}
 		}
 
 		10 = {
@@ -688,7 +953,36 @@ automate_eca_research = {
 			building = building_refinery
 			available = {
 				exists = owner
-				owner = { eca_has_exotic_gas_deficit = yes }
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
+			}
+		}
+
+		12_admin = {
+			building = building_bureaucratic_1
+			available = {
+				exists = owner
+				owner = {
+					is_spiritualist = no
+					has_make_spiritualist_perk = no
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		12_temple = {
+			building = building_temple
+			available = {
+				exists = owner
+				owner = {
+					OR = {
+						is_spiritualist = yes
+						has_make_spiritualist_perk = yes
+					}
+					eca_can_afford_energy_upkeep = yes
+				}
 			}
 		}
 
@@ -703,7 +997,10 @@ automate_eca_research = {
 			building = building_crystal_plant
 			available = {
 				exists = owner
-				owner = { eca_has_rare_crystal_deficit = yes }
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -711,7 +1008,10 @@ automate_eca_research = {
 			building = building_chemical_plant
 			available = {
 				exists = owner
-				owner = { eca_has_volatile_mote_deficit = yes }
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 	}
@@ -761,12 +1061,21 @@ automate_eca_industrial = {
 			building = building_factory_upkeep_1
 		}
 
+		# Stackable production - 2x buffer required
 		7 = {
 			building = building_foundry_1
+			available = {
+				exists = owner
+				owner = { eca_can_afford_foundry_upkeep = yes }
+			}
 		}
 
 		8 = {
 			building = building_factory_1
+			available = {
+				exists = owner
+				owner = { eca_can_afford_factory_upkeep = yes }
+			}
 		}
 
 		9 = {
@@ -781,7 +1090,10 @@ automate_eca_industrial = {
 			building = building_chemical_plant
 			available = {
 				exists = owner
-				owner = { eca_has_volatile_mote_deficit = yes }
+				owner = {
+					eca_has_volatile_mote_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -789,7 +1101,10 @@ automate_eca_industrial = {
 			building = building_crystal_plant
 			available = {
 				exists = owner
-				owner = { eca_has_rare_crystal_deficit = yes }
+				owner = {
+					eca_has_rare_crystal_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
@@ -797,11 +1112,40 @@ automate_eca_industrial = {
 			building = building_refinery
 			available = {
 				exists = owner
-				owner = { eca_has_exotic_gas_deficit = yes }
+				owner = {
+					eca_has_exotic_gas_deficit = yes
+					eca_can_afford_strategic_upkeep = yes
+				}
 			}
 		}
 
-		13 = {
+		13_admin = {
+			building = building_bureaucratic_1
+			available = {
+				exists = owner
+				owner = {
+					is_spiritualist = no
+					has_make_spiritualist_perk = no
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		13_temple = {
+			building = building_temple
+			available = {
+				exists = owner
+				owner = {
+					OR = {
+						is_spiritualist = yes
+						has_make_spiritualist_perk = yes
+					}
+					eca_can_afford_energy_upkeep = yes
+				}
+			}
+		}
+
+		14 = {
 			building = building_holo_theatres
 			available = {
 				free_amenities < 3

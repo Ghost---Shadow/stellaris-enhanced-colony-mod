@@ -95,16 +95,12 @@ automate_eca_proactive_foundry = {
 		NOT = { any_owned_pop_group = { is_unemployed = yes } }
 		NOT = { has_available_jobs = metallurgist }
 		free_district_slots > 0
+		exists = owner
+		owner = { eca_can_afford_foundry_upkeep = yes }
 	}
 
 	emergency = yes
 	category = "planet_automation_designation_construction"
-
-	prio_districts = {
-		district_city
-		district_arcology_housing
-		district_rw_city
-	}
 
 	prio_zones = {
 		zone_foundry
@@ -117,16 +113,12 @@ automate_eca_proactive_factory = {
 		NOT = { any_owned_pop_group = { is_unemployed = yes } }
 		NOT = { has_available_jobs = artisan }
 		free_district_slots > 0
+		exists = owner
+		owner = { eca_can_afford_factory_upkeep = yes }
 	}
 
 	emergency = yes
 	category = "planet_automation_designation_construction"
-
-	prio_districts = {
-		district_city
-		district_arcology_housing
-		district_rw_city
-	}
 
 	prio_zones = {
 		zone_factory
@@ -139,18 +131,12 @@ automate_eca_proactive_research = {
 		NOT = { any_owned_pop_group = { is_unemployed = yes } }
 		NOT = { has_available_jobs = researcher }
 		free_district_slots > 0
+		exists = owner
+		owner = { eca_can_afford_research_upkeep = yes }
 	}
 
 	emergency = yes
 	category = "planet_automation_designation_construction"
-
-	prio_districts = {
-		district_city
-		district_arcology_housing
-		district_rw_city
-		district_hab_science
-		district_hab_housing
-	}
 
 	prio_zones = {
 		zone_research
@@ -164,16 +150,15 @@ automate_eca_proactive_industrial = {
 		NOT = { has_available_jobs = metallurgist }
 		NOT = { has_available_jobs = artisan }
 		free_district_slots > 0
+		exists = owner
+		owner = {
+			eca_can_afford_foundry_upkeep = yes
+			eca_can_afford_factory_upkeep = yes
+		}
 	}
 
 	emergency = yes
 	category = "planet_automation_designation_construction"
-
-	prio_districts = {
-		district_city
-		district_arcology_housing
-		district_rw_city
-	}
 
 	prio_zones = {
 		zone_industrial
@@ -187,6 +172,7 @@ automate_eca_proactive_capital = {
 		NOT = { has_available_jobs = researcher }
 		NOT = { has_available_jobs = metallurgist }
 		NOT = { has_available_jobs = entertainer }
+		NOT = { has_available_jobs = clerk }
 		free_district_slots > 0
 	}
 
