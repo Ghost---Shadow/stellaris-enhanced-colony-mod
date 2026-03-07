@@ -60,7 +60,7 @@ Each Enhanced designation (prefixed `col_eca_`) provides the same resource bonus
 
 ### Emergency Exceptions
 
-These fire with `emergency = yes`, bypassing the normal free-pops requirement:
+These fire with `emergency = yes`, bypassing the normal free-pops requirement. All emergency blocks require `num_pops > 0` — buildings are never queued on empty planets:
 
 - **Robot assembly** — builds `building_robot_assembly_plant` if empire has 4+ alloy surplus (2x the 2 alloy/month roboticist upkeep)
 - **Gene clinic** — builds on any ECA planet for organic empires

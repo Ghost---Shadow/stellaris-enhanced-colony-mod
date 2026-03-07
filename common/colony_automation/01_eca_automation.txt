@@ -106,34 +106,30 @@ automate_eca_capital = {
 			}
 		}
 
-		# Alloy foundry - NPV=1133, early game or deficit
+		# Alloy foundry - NPV=1133, deficit only
 		7 = {
 			building = building_foundry_1
 			available = {
+				num_pops > 0
 				exists = owner
 				owner = {
 					eca_can_afford_foundry_upkeep = yes
-					OR = {
-						eca_has_alloy_deficit = yes
-						eca_is_early_game = yes
-					}
+					eca_has_alloy_deficit = yes
 				}
 				owner = { eca_can_afford_build_cost_400 = yes }
 			}
 		}
 
-		# CG factory - NPV=1133, early game or deficit
+		# CG factory - NPV=1133, deficit only
 		8 = {
 			building = building_factory_1
 			available = {
+				num_pops > 0
 				exists = owner
 				owner = {
 					country_uses_consumer_goods = yes
 					eca_can_afford_factory_upkeep = yes
-					OR = {
-						eca_has_consumer_goods_deficit = yes
-						eca_is_early_game = yes
-					}
+					eca_has_consumer_goods_deficit = yes
 				}
 				owner = { eca_can_afford_build_cost_400 = yes }
 			}
