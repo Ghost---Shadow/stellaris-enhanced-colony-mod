@@ -109,7 +109,10 @@ automate_eca_robot_assembly = {
 			has_designation = col_eca_industrial
 		}
 		free_building_slots > 0
+		num_pops > 0
 		can_assemble_robot = yes
+		# Don't build pop growth if pops are already unemployed
+		NOT = { any_owned_pop_group = { is_unemployed = yes } }
 		exists = owner
 		owner = {
 			is_regular_empire = yes
@@ -151,6 +154,9 @@ automate_eca_gene_clinic = {
 			has_designation = col_eca_industrial
 		}
 		free_building_slots > 0
+		num_pops > 0
+		# Don't build pop growth if pops are already unemployed
+		NOT = { any_owned_pop_group = { is_unemployed = yes } }
 	}
 
 	emergency = yes
@@ -303,11 +309,8 @@ automate_eca_proactive_mining = {
 		exists = owner
 		owner = { eca_can_afford_build_cost_300 = yes }
 		OR = {
-			# Proactive: all employed, no open mining jobs
-			AND = {
-				NOT = { any_owned_pop_group = { is_unemployed = yes } }
-				NOT = { has_available_jobs = miner }
-			}
+			# No open mining jobs — build whether pops are unemployed or all employed
+			NOT = { has_available_jobs = miner }
 			# Deficit-reactive: empire needs minerals
 			owner = { eca_has_mineral_deficit = yes }
 		}
@@ -330,10 +333,9 @@ automate_eca_proactive_generator = {
 		exists = owner
 		owner = { eca_can_afford_build_cost_300 = yes }
 		OR = {
-			AND = {
-				NOT = { any_owned_pop_group = { is_unemployed = yes } }
-				NOT = { has_available_jobs = technician }
-			}
+			# No open technician jobs — build whether pops are unemployed or all employed
+			NOT = { has_available_jobs = technician }
+			# Deficit-reactive: empire needs energy
 			owner = { eca_has_energy_deficit = yes }
 		}
 	}
@@ -355,10 +357,9 @@ automate_eca_proactive_farming = {
 		exists = owner
 		owner = { eca_can_afford_build_cost_300 = yes }
 		OR = {
-			AND = {
-				NOT = { any_owned_pop_group = { is_unemployed = yes } }
-				NOT = { has_available_jobs = farmer }
-			}
+			# No open farmer jobs — build whether pops are unemployed or all employed
+			NOT = { has_available_jobs = farmer }
+			# Deficit-reactive: empire needs food
 			owner = { eca_has_food_deficit = yes }
 		}
 	}
@@ -383,10 +384,9 @@ automate_eca_proactive_foundry = {
 			eca_can_afford_build_cost_400 = yes
 		}
 		OR = {
-			AND = {
-				NOT = { any_owned_pop_group = { is_unemployed = yes } }
-				NOT = { has_available_jobs = foundry }
-			}
+			# No open foundry jobs — build whether pops are unemployed or all employed
+			NOT = { has_available_jobs = foundry }
+			# Deficit-reactive: empire needs alloys
 			owner = { eca_has_alloy_deficit = yes }
 		}
 	}
@@ -410,10 +410,9 @@ automate_eca_proactive_factory = {
 			eca_can_afford_build_cost_400 = yes
 		}
 		OR = {
-			AND = {
-				NOT = { any_owned_pop_group = { is_unemployed = yes } }
-				NOT = { has_available_jobs = artisan }
-			}
+			# No open artisan jobs — build whether pops are unemployed or all employed
+			NOT = { has_available_jobs = artisan }
+			# Deficit-reactive: empire needs consumer goods
 			owner = { eca_has_consumer_goods_deficit = yes }
 		}
 	}
@@ -436,12 +435,10 @@ automate_eca_proactive_research = {
 			eca_can_afford_research_upkeep = yes
 			eca_can_afford_build_cost_400 = yes
 		}
-		AND = {
-			NOT = { any_owned_pop_group = { is_unemployed = yes } }
-			NOT = { has_available_jobs = physicist }
-			NOT = { has_available_jobs = biologist }
-			NOT = { has_available_jobs = engineer }
-		}
+		# No open researcher jobs — build whether pops are unemployed or all employed
+		NOT = { has_available_jobs = physicist }
+		NOT = { has_available_jobs = biologist }
+		NOT = { has_available_jobs = engineer }
 	}
 
 	emergency = yes
@@ -464,11 +461,12 @@ automate_eca_proactive_industrial = {
 			eca_can_afford_build_cost_400 = yes
 		}
 		OR = {
+			# No open foundry/artisan jobs — build whether pops are unemployed or all employed
 			AND = {
-				NOT = { any_owned_pop_group = { is_unemployed = yes } }
 				NOT = { has_available_jobs = foundry }
 				NOT = { has_available_jobs = artisan }
 			}
+			# Deficit-reactive
 			owner = { eca_has_alloy_deficit = yes }
 			owner = { eca_has_consumer_goods_deficit = yes }
 		}
@@ -490,8 +488,8 @@ automate_eca_proactive_capital = {
 		exists = owner
 		owner = { eca_can_afford_build_cost_500 = yes }
 		OR = {
+			# No open jobs of any capital-relevant type — build whether pops are unemployed or all employed
 			AND = {
-				NOT = { any_owned_pop_group = { is_unemployed = yes } }
 				NOT = { has_available_jobs = physicist }
 				NOT = { has_available_jobs = biologist }
 				NOT = { has_available_jobs = engineer }
@@ -499,6 +497,7 @@ automate_eca_proactive_capital = {
 				NOT = { has_available_jobs = entertainer }
 				NOT = { has_available_jobs = clerk }
 			}
+			# Deficit-reactive
 			owner = { eca_has_alloy_deficit = yes }
 			owner = { eca_has_consumer_goods_deficit = yes }
 			owner = { eca_has_energy_deficit = yes }
