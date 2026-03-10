@@ -188,7 +188,7 @@ automate_eca_holo_theatre = {
 	}
 
 	emergency = yes
-	category = "planet_automation_amenity"
+	category = "planet_automation_amenities"
 
 	buildings = {
 		holo_theatre = {

@@ -95,9 +95,9 @@ eca_is_late_game = {
 # "Only buy it if you have 2x the cost" - prevents draining economy
 # Values are ~2x the typical monthly upkeep of the relevant building type
 
-# Research labs cost ~2 CG/month → need 4+ surplus
+# Researchers cost ~1.5 CG/pop, a research lab employs ~3 pops → ~4.5 CG/month → need 10+ surplus
 eca_can_afford_research_upkeep = {
-	has_monthly_income = { resource = consumer_goods value >= 4 }
+	has_monthly_income = { resource = consumer_goods value >= 10 }
 }
 
 # Foundries cost ~6 minerals/month → need 12+ surplus
