@@ -66,6 +66,7 @@ These fire with `emergency = yes`, bypassing the normal free-pops requirement. A
 - **Gene clinic** — builds on any ECA planet for organic empires
 - **Proactive districts/zones** — builds when all pops are employed AND no relevant jobs are open, OR when empire has a deficit
 - **Cross-designation deficit building** — any ECA planet builds alloy foundries, consumer goods factories, or resource districts when the empire has a severe deficit
+- **Low stability response** — builds precinct houses and strongholds when planet stability drops below 50 (1 each; a second of each at critically low stability below 25)
 
 ### Scripted Triggers
 
