@@ -1,0 +1,218 @@
+# Enhanced Colony Automation AI - Building Replacement Events
+# These fire monthly on ECA planets. When amenities or stability are critically
+# low and there are no free building slots, the lowest-priority production
+# building is demolished to make room for holo theatres or precincts.
+# The existing emergency automation then fills the freed slot.
+
+namespace = eca_events
+
+# ===== Amenity Emergency: Demolish for Holo Theatre =====
+# Fires monthly on ECA planets with negative amenities and no free building slots.
+# Removes one low-priority building so the emergency automation can build a holo theatre.
+planet_event = {
+	id = eca_events.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		free_amenities < 0
+		free_building_slots = 0
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			is_gestalt = no
+		}
+		OR = {
+			has_designation = col_eca_capital
+			has_designation = col_eca_mining
+			has_designation = col_eca_generator
+			has_designation = col_eca_farming
+			has_designation = col_eca_foundry
+			has_designation = col_eca_factory
+			has_designation = col_eca_research
+			has_designation = col_eca_industrial
+		}
+		# Don't demolish if we already have a holo theatre queued or entertainer jobs open
+		NOT = { has_available_jobs = entertainer }
+	}
+
+	immediate = {
+		# Demolish in priority order: lowest-value first
+		# 1. Off-designation unity buildings (bureaucratic/temple)
+		if = {
+			limit = {
+				OR = {
+					has_designation = col_eca_mining
+					has_designation = col_eca_generator
+					has_designation = col_eca_farming
+					has_designation = col_eca_foundry
+					has_designation = col_eca_factory
+					has_designation = col_eca_research
+				}
+				has_building = building_bureaucratic_1
+			}
+			remove_building = building_bureaucratic_1
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_designation = col_eca_mining
+					has_designation = col_eca_generator
+					has_designation = col_eca_farming
+					has_designation = col_eca_foundry
+					has_designation = col_eca_factory
+					has_designation = col_eca_research
+				}
+				has_building = building_temple
+			}
+			remove_building = building_temple
+		}
+		# 2. Strategic resource plants (lowest NPV)
+		else_if = {
+			limit = { has_building = building_chemical_plant }
+			remove_building = building_chemical_plant
+		}
+		else_if = {
+			limit = { has_building = building_crystal_plant }
+			remove_building = building_crystal_plant
+		}
+		else_if = {
+			limit = { has_building = building_refinery }
+			remove_building = building_refinery
+		}
+		# 3. Off-designation production: foundry on non-foundry worlds
+		else_if = {
+			limit = {
+				NOR = {
+					has_designation = col_eca_foundry
+					has_designation = col_eca_industrial
+				}
+				has_building = building_foundry_1
+			}
+			remove_building = building_foundry_1
+		}
+		# 4. Off-designation production: factory on non-factory worlds
+		else_if = {
+			limit = {
+				NOR = {
+					has_designation = col_eca_factory
+					has_designation = col_eca_industrial
+				}
+				has_building = building_factory_1
+			}
+			remove_building = building_factory_1
+		}
+		# 5. Research lab on non-research worlds
+		else_if = {
+			limit = {
+				NOT = { has_designation = col_eca_research }
+				has_building = building_research_lab_1
+			}
+			remove_building = building_research_lab_1
+		}
+	}
+}
+
+# ===== Stability Emergency: Demolish for Precinct =====
+# Fires monthly on ECA planets with low stability, no free building slots,
+# and no existing precinct. Removes one low-priority building so the emergency
+# automation can build a precinct house.
+planet_event = {
+	id = eca_events.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		planet_stability < 40
+		free_building_slots = 0
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			is_gestalt = no
+		}
+		OR = {
+			has_designation = col_eca_capital
+			has_designation = col_eca_mining
+			has_designation = col_eca_generator
+			has_designation = col_eca_farming
+			has_designation = col_eca_foundry
+			has_designation = col_eca_factory
+			has_designation = col_eca_research
+			has_designation = col_eca_industrial
+		}
+		# Only fire if we don't already have a precinct
+		NOT = { has_building = building_precinct_house }
+		NOT = { has_building = building_hall_judgment }
+	}
+
+	immediate = {
+		# Same demolition priority as amenity event
+		if = {
+			limit = {
+				OR = {
+					has_designation = col_eca_mining
+					has_designation = col_eca_generator
+					has_designation = col_eca_farming
+					has_designation = col_eca_foundry
+					has_designation = col_eca_factory
+					has_designation = col_eca_research
+				}
+				has_building = building_bureaucratic_1
+			}
+			remove_building = building_bureaucratic_1
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_designation = col_eca_mining
+					has_designation = col_eca_generator
+					has_designation = col_eca_farming
+					has_designation = col_eca_foundry
+					has_designation = col_eca_factory
+					has_designation = col_eca_research
+				}
+				has_building = building_temple
+			}
+			remove_building = building_temple
+		}
+		else_if = {
+			limit = { has_building = building_chemical_plant }
+			remove_building = building_chemical_plant
+		}
+		else_if = {
+			limit = { has_building = building_crystal_plant }
+			remove_building = building_crystal_plant
+		}
+		else_if = {
+			limit = { has_building = building_refinery }
+			remove_building = building_refinery
+		}
+		else_if = {
+			limit = {
+				NOR = {
+					has_designation = col_eca_foundry
+					has_designation = col_eca_industrial
+				}
+				has_building = building_foundry_1
+			}
+			remove_building = building_foundry_1
+		}
+		else_if = {
+			limit = {
+				NOR = {
+					has_designation = col_eca_factory
+					has_designation = col_eca_industrial
+				}
+				has_building = building_factory_1
+			}
+			remove_building = building_factory_1
+		}
+		else_if = {
+			limit = {
+				NOT = { has_designation = col_eca_research }
+				has_building = building_research_lab_1
+			}
+			remove_building = building_research_lab_1
+		}
+	}
+}

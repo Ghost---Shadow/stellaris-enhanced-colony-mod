@@ -29,8 +29,12 @@ EnhancedColonyAI/
 │   │   └── 01_eca_exceptions.txt          # Emergency & proactive building rules
 │   ├── colony_types/
 │   │   └── 01_eca_colony_types.txt        # Colony designation definitions & weights
+│   ├── on_actions/
+│   │   └── 99_eca_on_actions.txt          # Monthly pulse hooks for building replacement
 │   └── scripted_triggers/
 │       └── 99_eca_scripted_triggers.txt   # Reusable deficit/surplus/affordability triggers
+├── events/
+│   └── eca_events.txt                     # Building replacement events (amenity & stability)
 ├── localisation/
 │   └── english/
 │       └── enhanced_colony_ai_l_english.yml
@@ -67,6 +71,23 @@ These fire with `emergency = yes`, bypassing the normal free-pops requirement. A
 - **Proactive districts/zones** — builds when all pops are employed AND no relevant jobs are open, OR when empire has a deficit
 - **Cross-designation deficit building** — any ECA planet builds alloy foundries, consumer goods factories, or resource districts when the empire has a severe deficit
 - **Low stability response** — builds precinct houses and strongholds when planet stability drops below 50 (1 each; a second of each at critically low stability below 25)
+
+### Building Replacement Events
+
+When a planet has no free building slots and faces an amenity or stability crisis, monthly events automatically demolish the lowest-priority building to free a slot for holo theatres or precincts. The existing emergency automation then fills the freed slot.
+
+**Triggers:**
+- `eca_events.1` — Amenity emergency: fires when `free_amenities < 0` and `free_building_slots = 0`
+- `eca_events.2` — Stability emergency: fires when `planet_stability < 40`, `free_building_slots = 0`, and no precinct/hall of judgment exists
+
+**Demolition priority** (lowest-value first):
+1. Off-designation unity buildings (bureaucratic office, temple)
+2. Strategic resource plants (chemical, crystal, refinery)
+3. Off-designation foundry
+4. Off-designation factory
+5. Off-designation research lab
+
+Both events hook into `on_colony_monthly_pulse` via `common/on_actions/99_eca_on_actions.txt`.
 
 ### Scripted Triggers
 

@@ -1,0 +1,7 @@
+# ECA: Hook into monthly colony pulse to handle building replacement
+on_colony_monthly_pulse = {
+	events = {
+		eca_events.1		# Replace low-priority building for amenity emergency
+		eca_events.2		# Replace low-priority building for stability emergency
+	}
+}
