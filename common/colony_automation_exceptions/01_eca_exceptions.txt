@@ -488,14 +488,15 @@ automate_eca_proactive_capital = {
 		exists = owner
 		owner = { eca_can_afford_build_cost_500 = yes }
 		OR = {
-			# No open jobs of any capital-relevant type — build whether pops are unemployed or all employed
+			# No open specialist jobs — build districts/zones for unemployed specialists
+			# Excludes clerk (worker-tier, specialists won't demote to fill them)
 			AND = {
 				NOT = { has_available_jobs = physicist }
 				NOT = { has_available_jobs = biologist }
 				NOT = { has_available_jobs = engineer }
 				NOT = { has_available_jobs = foundry }
+				NOT = { has_available_jobs = artisan }
 				NOT = { has_available_jobs = entertainer }
-				NOT = { has_available_jobs = clerk }
 			}
 			# Deficit-reactive
 			owner = { eca_has_alloy_deficit = yes }
