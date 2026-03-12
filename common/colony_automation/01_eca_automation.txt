@@ -17,6 +17,12 @@ automate_eca_capital = {
 		district_arcology_housing
 		district_rw_city
 		district_hab_housing
+		district_generator
+		district_generator_uncapped
+		district_mining
+		district_mining_uncapped
+		district_farming
+		district_farming_uncapped
 	}
 
 	prio_zones = {
