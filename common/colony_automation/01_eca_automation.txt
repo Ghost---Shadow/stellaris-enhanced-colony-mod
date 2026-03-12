@@ -799,10 +799,10 @@ automate_eca_foundry = {
 		has_designation = col_eca_foundry
 	}
 
-	# No district_city - creates clerks not metallurgists (NPV=-124)
 	prio_districts = {
 		district_arcology_housing
 		district_rw_city
+		district_city
 	}
 
 	prio_zones = {
@@ -966,10 +966,10 @@ automate_eca_factory = {
 		has_designation = col_eca_factory
 	}
 
-	# No district_city - creates clerks not artisans (NPV=-124)
 	prio_districts = {
 		district_arcology_housing
 		district_rw_city
+		district_city
 	}
 
 	prio_zones = {
@@ -1132,12 +1132,12 @@ automate_eca_research = {
 		has_designation = col_eca_research
 	}
 
-	# No district_city - creates clerks not researchers (NPV=-124)
 	prio_districts = {
 		district_arcology_housing
 		district_rw_city
 		district_hab_science
 		district_hab_housing
+		district_city
 	}
 
 	prio_zones = {
@@ -1323,10 +1323,10 @@ automate_eca_industrial = {
 		has_designation = col_eca_industrial
 	}
 
-	# No district_city - creates clerks not specialists (NPV=-124)
 	prio_districts = {
 		district_arcology_housing
 		district_rw_city
+		district_city
 	}
 
 	prio_zones = {
