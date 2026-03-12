@@ -379,15 +379,18 @@ automate_eca_proactive_foundry = {
 		free_district_slots > 0
 		num_pops > 0
 		exists = owner
-		owner = {
-			eca_can_afford_foundry_upkeep = yes
-			eca_can_afford_build_cost_400 = yes
-		}
+		owner = { eca_can_afford_build_cost_400 = yes }
 		OR = {
 			# No open foundry jobs — build whether pops are unemployed or all employed
 			NOT = { has_available_jobs = foundry }
 			# Deficit-reactive: empire needs alloys
 			owner = { eca_has_alloy_deficit = yes }
+		}
+		# Require upkeep affordability only when building proactively (no unemployed pops)
+		# When pops are unemployed, employing them is better than letting them sit idle
+		OR = {
+			any_owned_pop_group = { is_unemployed = yes }
+			owner = { eca_can_afford_foundry_upkeep = yes }
 		}
 	}
 
@@ -405,15 +408,17 @@ automate_eca_proactive_factory = {
 		free_district_slots > 0
 		num_pops > 0
 		exists = owner
-		owner = {
-			eca_can_afford_factory_upkeep = yes
-			eca_can_afford_build_cost_400 = yes
-		}
+		owner = { eca_can_afford_build_cost_400 = yes }
 		OR = {
 			# No open artisan jobs — build whether pops are unemployed or all employed
 			NOT = { has_available_jobs = artisan }
 			# Deficit-reactive: empire needs consumer goods
 			owner = { eca_has_consumer_goods_deficit = yes }
+		}
+		# Require upkeep affordability only when building proactively (no unemployed pops)
+		OR = {
+			any_owned_pop_group = { is_unemployed = yes }
+			owner = { eca_can_afford_factory_upkeep = yes }
 		}
 	}
 
@@ -431,14 +436,16 @@ automate_eca_proactive_research = {
 		free_district_slots > 0
 		num_pops > 0
 		exists = owner
-		owner = {
-			eca_can_afford_research_upkeep = yes
-			eca_can_afford_build_cost_400 = yes
-		}
+		owner = { eca_can_afford_build_cost_400 = yes }
 		# No open researcher jobs — build whether pops are unemployed or all employed
 		NOT = { has_available_jobs = physicist }
 		NOT = { has_available_jobs = biologist }
 		NOT = { has_available_jobs = engineer }
+		# Require upkeep affordability only when building proactively (no unemployed pops)
+		OR = {
+			any_owned_pop_group = { is_unemployed = yes }
+			owner = { eca_can_afford_research_upkeep = yes }
+		}
 	}
 
 	emergency = yes
@@ -455,11 +462,7 @@ automate_eca_proactive_industrial = {
 		free_district_slots > 0
 		num_pops > 0
 		exists = owner
-		owner = {
-			eca_can_afford_foundry_upkeep = yes
-			eca_can_afford_factory_upkeep = yes
-			eca_can_afford_build_cost_400 = yes
-		}
+		owner = { eca_can_afford_build_cost_400 = yes }
 		OR = {
 			# No open foundry/artisan jobs — build whether pops are unemployed or all employed
 			AND = {
@@ -469,6 +472,14 @@ automate_eca_proactive_industrial = {
 			# Deficit-reactive
 			owner = { eca_has_alloy_deficit = yes }
 			owner = { eca_has_consumer_goods_deficit = yes }
+		}
+		# Require upkeep affordability only when building proactively (no unemployed pops)
+		OR = {
+			any_owned_pop_group = { is_unemployed = yes }
+			AND = {
+				owner = { eca_can_afford_foundry_upkeep = yes }
+				owner = { eca_can_afford_factory_upkeep = yes }
+			}
 		}
 	}
 
