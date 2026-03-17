@@ -5,4 +5,4 @@ tags={
 	"Utilities"
 }
 name="Enhanced Colony Automation AI"
-supported_version="4.2.*"
+supported_version="4.3.*"

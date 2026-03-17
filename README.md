@@ -2,7 +2,7 @@
 
 A Stellaris mod that adds 8 new colony designations with smarter automation logic. Designed for **regular empires** (non-gestalt) and runs alongside vanilla designations for A/B comparison.
 
-**Supported version:** Stellaris 4.2.*
+**Supported version:** Stellaris 4.3.*
 
 ## What This Mod Does
 
