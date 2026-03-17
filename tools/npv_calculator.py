@@ -129,9 +129,9 @@ BUILDING_ECONOMICS = {
     },
     # Capital unique buildings
     "building_embassy": {
-        "build_cost": {"minerals": 400},
+        "build_cost": {"minerals": 600, "rare_crystals": 50},
         "output": {"unity": 3, "amenities": 5},
-        "upkeep": {"energy": 2},
+        "upkeep": {"energy": 5, "rare_crystals": 1},
     },
     "building_autochthon_monument": {
         "build_cost": {"minerals": 400},
@@ -281,13 +281,11 @@ COND_FOUNDRY_DEFICIT = (
     "}"
 )
 COND_FOUNDRY_CAPITAL = (
+    "num_pops > 0\n"
     "exists = owner\n"
     "owner = {\n"
     "\teca_can_afford_foundry_upkeep = yes\n"
-    "\tOR = {\n"
-    "\t\teca_has_alloy_deficit = yes\n"
-    "\t\teca_is_early_game = yes\n"
-    "\t}\n"
+    "\teca_has_alloy_deficit = yes\n"
     "}"
 )
 
@@ -304,14 +302,12 @@ COND_FACTORY_DEFICIT = (
     "}"
 )
 COND_FACTORY_CAPITAL = (
+    "num_pops > 0\n"
     "exists = owner\n"
     "owner = {\n"
     "\tcountry_uses_consumer_goods = yes\n"
     "\teca_can_afford_factory_upkeep = yes\n"
-    "\tOR = {\n"
-    "\t\teca_has_consumer_goods_deficit = yes\n"
-    "\t\teca_is_early_game = yes\n"
-    "\t}\n"
+    "\teca_has_consumer_goods_deficit = yes\n"
     "}"
 )
 
@@ -430,6 +426,12 @@ DESIGNATIONS = {
             "district_arcology_housing",
             "district_rw_city",
             "district_hab_housing",
+            "district_generator",
+            "district_generator_uncapped",
+            "district_mining",
+            "district_mining_uncapped",
+            "district_farming",
+            "district_farming_uncapped",
         ],
         "prio_zones": [
             "zone_industrial",
@@ -452,9 +454,9 @@ DESIGNATIONS = {
             b("building_corporate_vault", suffix="corp", tier=0),
             # Tier 1: Production (NPV-sorted)
             b("building_foundry_1", available=COND_FOUNDRY_CAPITAL,
-              tier=1, comment="Alloy foundry - NPV={npv}, early game or deficit"),
+              tier=1, comment="Alloy foundry - NPV={npv}, deficit only"),
             b("building_factory_1", available=COND_FACTORY_CAPITAL,
-              tier=1, comment="CG factory - NPV={npv}, early game or deficit"),
+              tier=1, comment="CG factory - NPV={npv}, deficit only"),
             # Admin/temple variant group
             *admin_temple_group(),
             b("building_research_lab_1", available=COND_RESEARCH_AFFORD,
@@ -560,12 +562,11 @@ DESIGNATIONS = {
 
     # ── FOUNDRY ──
     "foundry": {
-        # No district_city - it creates clerks not metallurgists (NPV=-124)
         "prio_districts": [
             "district_arcology_housing",
             "district_rw_city",
+            "district_city",
         ],
-        "prio_districts_comment": "No district_city - creates clerks not metallurgists (NPV=-124)",
         "prio_zones": [
             "zone_foundry",
         ],
@@ -600,8 +601,8 @@ DESIGNATIONS = {
         "prio_districts": [
             "district_arcology_housing",
             "district_rw_city",
+            "district_city",
         ],
-        "prio_districts_comment": "No district_city - creates clerks not artisans (NPV=-124)",
         "prio_zones": [
             "zone_factory",
         ],
@@ -633,8 +634,8 @@ DESIGNATIONS = {
             "district_rw_city",
             "district_hab_science",
             "district_hab_housing",
+            "district_city",
         ],
-        "prio_districts_comment": "No district_city - creates clerks not researchers (NPV=-124)",
         "prio_zones": [
             "zone_research",
         ],
@@ -670,8 +671,8 @@ DESIGNATIONS = {
         "prio_districts": [
             "district_arcology_housing",
             "district_rw_city",
+            "district_city",
         ],
-        "prio_districts_comment": "No district_city - creates clerks not specialists (NPV=-124)",
         "prio_zones": [
             "zone_industrial",
         ],
